@@ -18,6 +18,7 @@ public class GrubController {
 	@ModelAttribute("personCred")
 	public String setPersonCred() {
 		String s = "person creds class";
+		
 		return s;
 	}
 
