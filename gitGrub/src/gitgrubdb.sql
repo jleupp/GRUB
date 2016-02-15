@@ -5,12 +5,12 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema gitgrubdb
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `gitgrubdb` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema gitgrubdb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `gitgrubdb` DEFAULT CHARACTER SET utf8 ;
 SHOW WARNINGS;
@@ -193,17 +193,17 @@ CREATE INDEX `access_id_idx` ON `customer` (`access_id` ASC);
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `order`
+-- Table `customer_order`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `order` ;
+DROP TABLE IF EXISTS `customer_order` ;
 
 SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `order` (
-  `orderid` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `customer_order` (
+  `order_id` INT NOT NULL AUTO_INCREMENT,
   `customer_email` VARCHAR(30) NOT NULL,
   `dateOrdered` DATE NULL,
   `status` VARCHAR(45) NULL,
-  PRIMARY KEY (`orderid`),
+  PRIMARY KEY (`order_id`),
   CONSTRAINT `fkey_customer_email`
     FOREIGN KEY (`customer_email`)
     REFERENCES `customer` (`email`)
@@ -212,10 +212,10 @@ CREATE TABLE IF NOT EXISTS `order` (
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
-CREATE UNIQUE INDEX `id_UNIQUE` ON `order` (`orderid` ASC);
+CREATE UNIQUE INDEX `id_UNIQUE` ON `customer_order` (`order_id` ASC);
 
 SHOW WARNINGS;
-CREATE INDEX `customer_email_idx` ON `order` (`customer_email` ASC);
+CREATE INDEX `customer_email_idx` ON `customer_order` (`customer_email` ASC);
 
 SHOW WARNINGS;
 
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
   PRIMARY KEY (`orders_id`, `menuItems_id`),
   CONSTRAINT `fk_orderDetails_orders1`
     FOREIGN KEY (`orders_id`)
-    REFERENCES `order` (`orderid`)
+    REFERENCES `customer_order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_orderDetails_menuItems1`
