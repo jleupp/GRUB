@@ -1,5 +1,6 @@
 package client;
 
+import java.sql.Date;
 import java.util.Calendar;
 
 
@@ -20,12 +21,12 @@ public class Restaurant
 	@Column(name="category_id")
 	private String categoryId;
 	private String name;
-	@Temporal(TemporalType.DATE)
+	
 	@Column(name="open_time")
-	private Calendar openTime;
-	@Temporal(TemporalType.DATE)
+	private Date openTime;
+	
 	@Column(name="close_time")
-	private Calendar closeTime;
+	private Date closeTime;
 	@Column(name="street_address")
 	private String streetAddress;
 	private String city;
@@ -51,19 +52,19 @@ public class Restaurant
 	{
 		this.name = name;
 	}
-	public Calendar getOpenTime()
+	public Date getOpenTime()
 	{
 		return openTime;
 	}
-	public void setOpenTime(Calendar  openTime)
+	public void setOpenTime(Date  openTime)
 	{
 		this.openTime = openTime;
 	}
-	public Calendar getCloseTime()
+	public Date getCloseTime()
 	{
 		return closeTime;
 	}
-	public void setCloseTime(Calendar closeTime)
+	public void setCloseTime(Date closeTime)
 	{
 		this.closeTime = closeTime;
 	}

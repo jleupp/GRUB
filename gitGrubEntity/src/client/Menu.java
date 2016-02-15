@@ -1,6 +1,6 @@
 package client;
 
-import java.util.Calendar;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity @Table(name="menu")
 public class Menu
@@ -18,12 +16,12 @@ public class Menu
 	@Column(name="menu_id")
 	private int menuId;
 	private String type;
-	@Temporal(TemporalType.DATE)
+	
 	@Column(name="start_time")
-	private Calendar startTime;
-	@Temporal(TemporalType.DATE)
+	private Date startTime;
+	
 	@Column(name="end_time")
-	private Calendar endTime;
+	private Date endTime;
 	@Column(name="restaurant_id")
 	private int restaurantId;
 	
@@ -35,19 +33,19 @@ public class Menu
 	{
 		this.type = type;
 	}
-	public Calendar getStartTime()
+	public Date getStartTime()
 	{
 		return startTime;
 	}
-	public void setStartTime(Calendar startTime)
+	public void setStartTime(Date startTime)
 	{
 		this.startTime = startTime;
 	}
-	public Calendar getEndTime()
+	public Date getEndTime()
 	{
 		return endTime;
 	}
-	public void setEndTime(Calendar endTime)
+	public void setEndTime(Date endTime)
 	{
 		this.endTime = endTime;
 	}
