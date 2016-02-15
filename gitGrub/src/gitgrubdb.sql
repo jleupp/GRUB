@@ -297,9 +297,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', DEFAULT, 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', 'default12', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', 'default12', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', 'default12', 'password', 1);
 
 COMMIT;
 
