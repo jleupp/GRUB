@@ -6,20 +6,22 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import data.GrubDAO;
+import entities.LogInCredentials;
 
 @Controller
+@SessionAttributes({"personCred", "orderList"})
 public class GrubController {
 	@Autowired
 	private GrubDAO grubDAO;
 
 	@ModelAttribute("personCred")
-	public String setPersonCred() {
-		String s = "person creds class";
-		
-		return s;
+	public LogInCredentials setPersonCred() {
+		LogInCredentials login = new LogInCredentials();
+		return login;
 	}
 
 	@ModelAttribute("orderList")
@@ -30,13 +32,15 @@ public class GrubController {
 		return s;
 	}
 
-	@RequestMapping(path = "Form.do", params = "user", method = RequestMethod.POST)
+	@RequestMapping(path = "setManagerLoginCredentials.do", method = RequestMethod.POST)
+	public ModelAndView setManagerCredentials(@ModelAttribute("personCred") LogInCredentials login, String user_name, String password, String restaurant) {
+		ModelAndView mv = new ModelAndView("managerhome.jsp");
+		login.setUser_name(user_name);
+		login.setPassword(password);
+		grubDAO.checkManagerCred(login, restaurant);
 
-	public ModelAndView getName(@RequestParam("firstname") String n) {
-		ModelAndView mv = new ModelAndView();
-
-		mv.setViewName("FrontPage.jsp");
-		mv.addObject("newname", n);
+		
+		mv.addObject("personCred", login);
 		return mv;
 	}
 
