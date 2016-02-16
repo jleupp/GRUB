@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `restaurant` (
   `phone` VARCHAR(14) NOT NULL,
   `manager_email` VARCHAR(45) NULL,
   `table_count` INT NULL COMMENT 'Null here would be for restaurant\nthat is delivery/ or pick-up ONLY\n',
+  `address_tag` VARCHAR(17) NOT NULL DEFAULT 'BUSINESS',
   PRIMARY KEY (`id`),
   CONSTRAINT `fkey_manager_email`
     FOREIGN KEY (`manager_email`)
@@ -297,9 +298,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', 'default12', 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', 'default12', 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', 'default12', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', DEFAULT, 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', DEFAULT, 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', DEFAULT, 'password', 1);
 
 COMMIT;
 
@@ -309,9 +310,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`) VALUES (1, 'JAPANESE', 'Tokyo Joes', '1000', '2200', '6380 S Fiddlers Green Cir', 'Greenwood Village', 'CO', '80111', '(303)220-2877', 'tokyo_joe@mail.com', 30);
-INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`) VALUES (2, 'ITALIAN', 'Panzano', '630', '2300', '909 17th St', 'Denver', 'CO', '80202', '(303)296-3525', 'manager@panzano.com', 12);
-INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`) VALUES (3, 'AMERICAN(NEW)', 'The SportsBook Bar and Grill', '1100', '0200', '9660 E Arapahoe Rd', 'Greenwood Village', 'CO', '80112', '(303)799-1300', 'manager@SB.com', 15);
+INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`, `address_tag`) VALUES (1, 'JAPANESE', 'Tokyo Joes', '1000', '2200', '6380 S Fiddlers Green Cir', 'Greenwood Village', 'CO', '80111', '(303)220-2877', 'tokyo_joe@mail.com', 30, DEFAULT);
+INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`, `address_tag`) VALUES (2, 'ITALIAN', 'Panzano', '630', '2300', '909 17th St', 'Denver', 'CO', '80202', '(303)296-3525', 'manager@panzano.com', 12, DEFAULT);
+INSERT INTO `restaurant` (`id`, `category_id`, `name`, `open_time`, `close_time`, `street_address`, `city`, `state`, `zipcode`, `phone`, `manager_email`, `table_count`, `address_tag`) VALUES (3, 'AMERICAN(NEW)', 'The SportsBook Bar and Grill', '1100', '0200', '9660 E Arapahoe Rd', 'Greenwood Village', 'CO', '80112', '(303)799-1300', 'manager@SB.com', 15, DEFAULT);
 
 COMMIT;
 
