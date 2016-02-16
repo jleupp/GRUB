@@ -1,17 +1,14 @@
 package client;
 
 import java.sql.Date;
-import java.util.Calendar;
-
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity @Table(name="restaurant")
 public class Restaurant
@@ -24,14 +21,15 @@ public class Restaurant
 	
 	@Column(name="open_time")
 	private Date openTime;
-	
 	@Column(name="close_time")
 	private Date closeTime;
-	@Column(name="street_address")
-	private String streetAddress;
-	private String city;
-	private String state;
-	private String zipcode;
+	@Embedded
+	private Address address;
+//	@Column(name="street_address")
+//	private String streetAddress;
+//	private String city;
+//	private String state;
+//	private String zipcode;
 	private String phone;
 	
 	//relationship to manager
@@ -68,38 +66,42 @@ public class Restaurant
 	{
 		this.closeTime = closeTime;
 	}
-	public String getStreetAddress()
-	{
-		return streetAddress;
+	public Address getAddress(){
+		return address;
 	}
-	public void setStreetAddress(String streetAddress)
-	{
-		this.streetAddress = streetAddress;
-	}
-	public String getCity()
-	{
-		return city;
-	}
-	public void setCity(String city)
-	{
-		this.city = city;
-	}
-	public String getState()
-	{
-		return state;
-	}
-	public void setState(String state)
-	{
-		this.state = state;
-	}
-	public String getZipcode()
-	{
-		return zipcode;
-	}
-	public void setZipcode(String zipcode)
-	{
-		this.zipcode = zipcode;
-	}
+	
+//	public String getStreetAddress()
+//	{
+//		return streetAddress;
+//	}
+//	public void setStreetAddress(String streetAddress)
+//	{
+//		this.streetAddress = streetAddress;
+//	}
+//	public String getCity()
+//	{
+//		return city;
+//	}
+//	public void setCity(String city)
+//	{
+//		this.city = city;
+//	}
+//	public String getState()
+//	{
+//		return state;
+//	}
+//	public void setState(String state)
+//	{
+//		this.state = state;
+//	}
+//	public String getZipcode()
+//	{
+//		return zipcode;
+//	}
+//	public void setZipcode(String zipcode)
+//	{
+//		this.zipcode = zipcode;
+//	}
 	public String getPhone()
 	{
 		return phone;
@@ -132,8 +134,7 @@ public class Restaurant
 	public String toString()
 	{
 		return "Restaurant [id=" + id + ", categoryId=" + categoryId + ", name=" + name + ", openTime=" + openTime
-				+ ", closeTime=" + closeTime + ", streetAddress=" + streetAddress + ", city=" + city + ", state="
-				+ state + ", zipcode=" + zipcode + ", phone=" + phone + ", managerEmail=" + managerEmail
+				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + managerEmail
 				+ ", tableCount=" + tableCount + "]";
 	}
 	
