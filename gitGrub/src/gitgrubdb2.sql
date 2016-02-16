@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `menu_item` (
   `price` DECIMAL(7,2) NOT NULL,
   `description` VARCHAR(140) NULL,
   `rest_id` INT NOT NULL,
-  `temp_id` INT NULL,
+  `temp_id` ENUM('NORMAL', 'R', 'MR', 'M', 'MW', 'W') NOT NULL DEFAULT 'NORMAL',
   `menusection_id` INT NOT NULL,
   `menu_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -350,19 +350,19 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (1, 'Gyoza', 3.99, 'Pork gyoza with Joe\'s dipping sauce', 1, NULL, 1, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (2, 'Spring Rolls', 7.99, 'Chilled rice paper wraps with white chicken, tiger shrimp, or tofu', 1, NULL, 1, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (3, 'California Roll', 5.99, 'Real crab, avocado, cucumber roll', 1, NULL, 20, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (4, 'Tataki Salad', 12.99, 'Seared Ahi tuna, mixed greens, avocado, rice noodles', 1, NULL, 3, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (5, 'Calamari', 11.00, 'Crispy calamari and spicey chili aioli', 2, NULL, 1, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (6, 'Pastiche', 26.00, 'Layers of spicy meatballs and cheese tortellini', 2, NULL, 2, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (7, 'Risotto', 8.00, 'Speck, butternut squash, and porcini', 2, NULL, 2, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (8, 'Tiramisu', 9.00, 'Espresso soaked lady fingers layered with ameretto, mascarpone, and finished with cocoa', 2, NULL, 4, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (9, 'Shock Top', 4.00, 'Belgium White AVB 5.2%', 3, NULL, 5, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (10, 'Signature Margarita', 9.75, 'Cazadores Resposado cointreau, lime juice ', 3, NULL, 5, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (11, 'Bottomless Chips and Salsa', 3.95, NULL, 3, NULL, 1, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (12, 'Caesar Salad', 6.45, 'Romaine Lettuce, Croutons, Parmesan Cheese tossed in a Caesar dressing', 3, NULL, 3, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (13, 'Chicken add on', 3.00, 'Chicken add on for salad', 3, NULL, 6, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (1, 'Gyoza', 3.99, 'Pork gyoza with Joe\'s dipping sauce', 1, DEFAULT, 1, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (2, 'Spring Rolls', 7.99, 'Chilled rice paper wraps with white chicken, tiger shrimp, or tofu', 1, DEFAULT, 1, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (3, 'California Roll', 5.99, 'Real crab, avocado, cucumber roll', 1, DEFAULT, 20, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (4, 'Tataki Salad', 12.99, 'Seared Ahi tuna, mixed greens, avocado, rice noodles', 1, DEFAULT, 3, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (5, 'Calamari', 11.00, 'Crispy calamari and spicey chili aioli', 2, DEFAULT, 1, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (6, 'Pastiche', 26.00, 'Layers of spicy meatballs and cheese tortellini', 2, DEFAULT, 2, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (7, 'Risotto', 8.00, 'Speck, butternut squash, and porcini', 2, DEFAULT, 2, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (8, 'Tiramisu', 9.00, 'Espresso soaked lady fingers layered with ameretto, mascarpone, and finished with cocoa', 2, DEFAULT, 4, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (9, 'Shock Top', 4.00, 'Belgium White AVB 5.2%', 3, DEFAULT, 5, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (10, 'Signature Margarita', 9.75, 'Cazadores Resposado cointreau, lime juice ', 3, DEFAULT, 5, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (11, 'Bottomless Chips and Salsa', 3.95, NULL, 3, DEFAULT, 1, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (12, 'Caesar Salad', 6.45, 'Romaine Lettuce, Croutons, Parmesan Cheese tossed in a Caesar dressing', 3, DEFAULT, 3, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (13, 'Chicken add on', 3.00, 'Chicken add on for salad', 3, DEFAULT, 6, 3);
 
 COMMIT;
 

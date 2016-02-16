@@ -1,6 +1,7 @@
 package entities;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,8 +19,10 @@ public class Restaurant
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name="category_id")
 	private String categoryId;
+	
 	private String name;
 	
 	@Column(name="open_time")
@@ -40,9 +44,26 @@ public class Restaurant
 	
 	@Column(name="table_count")
 	private int tableCount;
+	
+	@OneToMany(mappedBy="restaurant")
+	private List<Menu> menus;
+
 	public String getCategoryId()
 	{
 		return categoryId;
+	}
+	
+	public void setCategoryId(String category) {
+		this.categoryId = category;
+	}
+	
+	
+	public List<Menu> getMenus() {
+		return menus;
+	}
+	
+	public void addMenu(Menu menu) {
+		this.menus.add(menu);
 	}
 	
 	public String getName()
