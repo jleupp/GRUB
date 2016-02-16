@@ -1,21 +1,29 @@
 package client;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Embeddable
+
+@Entity
+@IdClass(Address_PK.class)
 public class Address
 {
+	@Id
 	@Column(name="address_tag")
 	private String addressTag;
 	@Column(name="street_address")
 	private String streetAddress;
 	private String city;
 	private String state;
-	@Column(name="zip_code")
 	private String zipCode;
+	@Id
 	@Column(name="customer_email")
-	private String customerEmail;
+	private String email;
+	
 	
 	public void setAddressTag(String addressTag)
 	{
@@ -37,17 +45,18 @@ public class Address
 	{
 		this.zipCode = zipCode;
 	}
-	public void setCustomerEmail(String customerEmail)
-	{
-		this.customerEmail = customerEmail;
-	}
+	
 	@Override
 	public String toString()
 	{
 		return "Address [addressTag=" + addressTag + ", streetAddress=" + streetAddress + ", city=" + city + ", state="
-				+ state + ", zipCode=" + zipCode + ", customerEmail=" + customerEmail + "]";
+				+ state + ", zipCode=" + zipCode + ", customerEmail=" + email + "]";
 	}
-	
-	
+	public String getCustomerEmail() {
+		return email;
+	}
+	public void setCustomerEmail(String customerEmail) {
+		this.email = customerEmail;
+	}
 
 }

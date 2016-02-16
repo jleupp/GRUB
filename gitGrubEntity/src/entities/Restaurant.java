@@ -1,22 +1,21 @@
-package client;
+package entities;
 
 import java.sql.Date;
-import java.util.Calendar;
-
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity @Table(name="restaurant")
 public class Restaurant
 {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name="category_id")
 	private String categoryId;
@@ -24,9 +23,9 @@ public class Restaurant
 	
 	@Column(name="open_time")
 	private Date openTime;
-	
 	@Column(name="close_time")
 	private Date closeTime;
+
 	@Column(name="street_address")
 	private String streetAddress;
 	private String city;
@@ -35,8 +34,10 @@ public class Restaurant
 	private String phone;
 	
 	//relationship to manager
-	@Column(name="manager_email")
-	private String managerEmail;
+	@OneToOne
+	@JoinColumn(name="manager_email")
+	private Manager manager;
+	
 	@Column(name="table_count")
 	private int tableCount;
 	public String getCategoryId()
@@ -68,6 +69,7 @@ public class Restaurant
 	{
 		this.closeTime = closeTime;
 	}
+	
 	public String getStreetAddress()
 	{
 		return streetAddress;
@@ -108,13 +110,12 @@ public class Restaurant
 	{
 		this.phone = phone;
 	}
-	public String getManagerEmail()
-	{
-		return managerEmail;
+	public Manager getManager() {
+		return manager;
 	}
-	public void setManagerEmail(String managerEmail)
-	{
-		this.managerEmail = managerEmail;
+	
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 	public int getTableCount()
 	{
@@ -131,9 +132,9 @@ public class Restaurant
 	@Override
 	public String toString()
 	{
+		//toDo add in to string for address.getCity() 
 		return "Restaurant [id=" + id + ", categoryId=" + categoryId + ", name=" + name + ", openTime=" + openTime
-				+ ", closeTime=" + closeTime + ", streetAddress=" + streetAddress + ", city=" + city + ", state="
-				+ state + ", zipcode=" + zipcode + ", phone=" + phone + ", managerEmail=" + managerEmail
+				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + manager.getEmail()
 				+ ", tableCount=" + tableCount + "]";
 	}
 	
