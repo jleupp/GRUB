@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity @Table(name="restaurant")
@@ -133,6 +134,7 @@ public class Restaurant
 	@Override
 	public String toString()
 	{
+		//toDo add in to string for address.getCity() 
 		return "Restaurant [id=" + id + ", categoryId=" + categoryId + ", name=" + name + ", openTime=" + openTime
 				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + managerEmail
 				+ ", tableCount=" + tableCount + "]";
