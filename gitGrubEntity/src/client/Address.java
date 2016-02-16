@@ -1,11 +1,15 @@
 package client;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Id;
 
 @Embeddable
 public class Address
 {
+	@Id
+	private String theId;
 	@Column(name="address_tag")
 	private String addressTag;
 	@Column(name="street_address")
