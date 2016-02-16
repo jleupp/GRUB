@@ -1,20 +1,21 @@
-package client;
+package entities;
 
 import java.sql.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity @Table(name="restaurant")
 public class Restaurant
 {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name="category_id")
 	private String categoryId;
@@ -24,18 +25,19 @@ public class Restaurant
 	private Date openTime;
 	@Column(name="close_time")
 	private Date closeTime;
-	@Embedded
-	private Address address;
-//	@Column(name="street_address")
-//	private String streetAddress;
-//	private String city;
-//	private String state;
-//	private String zipcode;
+
+	@Column(name="street_address")
+	private String streetAddress;
+	private String city;
+	private String state;
+	private String zipcode;
 	private String phone;
 	
 	//relationship to manager
-	@Column(name="manager_email")
-	private String managerEmail;
+	@OneToOne
+	@JoinColumn(name="manager_email")
+	private Manager manager;
+	
 	@Column(name="table_count")
 	private int tableCount;
 	public String getCategoryId()
@@ -67,42 +69,39 @@ public class Restaurant
 	{
 		this.closeTime = closeTime;
 	}
-	public Address getAddress(){
-		return address;
-	}
 	
-//	public String getStreetAddress()
-//	{
-//		return streetAddress;
-//	}
-//	public void setStreetAddress(String streetAddress)
-//	{
-//		this.streetAddress = streetAddress;
-//	}
-//	public String getCity()
-//	{
-//		return city;
-//	}
-//	public void setCity(String city)
-//	{
-//		this.city = city;
-//	}
-//	public String getState()
-//	{
-//		return state;
-//	}
-//	public void setState(String state)
-//	{
-//		this.state = state;
-//	}
-//	public String getZipcode()
-//	{
-//		return zipcode;
-//	}
-//	public void setZipcode(String zipcode)
-//	{
-//		this.zipcode = zipcode;
-//	}
+	public String getStreetAddress()
+	{
+		return streetAddress;
+	}
+	public void setStreetAddress(String streetAddress)
+	{
+		this.streetAddress = streetAddress;
+	}
+	public String getCity()
+	{
+		return city;
+	}
+	public void setCity(String city)
+	{
+		this.city = city;
+	}
+	public String getState()
+	{
+		return state;
+	}
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+	public String getZipcode()
+	{
+		return zipcode;
+	}
+	public void setZipcode(String zipcode)
+	{
+		this.zipcode = zipcode;
+	}
 	public String getPhone()
 	{
 		return phone;
@@ -111,13 +110,12 @@ public class Restaurant
 	{
 		this.phone = phone;
 	}
-	public String getManagerEmail()
-	{
-		return managerEmail;
+	public Manager getManager() {
+		return manager;
 	}
-	public void setManagerEmail(String managerEmail)
-	{
-		this.managerEmail = managerEmail;
+	
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 	public int getTableCount()
 	{
@@ -136,7 +134,7 @@ public class Restaurant
 	{
 		//toDo add in to string for address.getCity() 
 		return "Restaurant [id=" + id + ", categoryId=" + categoryId + ", name=" + name + ", openTime=" + openTime
-				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + managerEmail
+				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + manager.getEmail()
 				+ ", tableCount=" + tableCount + "]";
 	}
 	
