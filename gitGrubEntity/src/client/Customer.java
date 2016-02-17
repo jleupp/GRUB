@@ -30,7 +30,7 @@ public class Customer implements Person
 	private List<Restaurant> restaurants;
 	
 	@OneToMany
-	@JoinColumn(name = "customer_email", referencedColumnName="email")
+	@JoinColumn(name = "email", referencedColumnName="email")
 	private List<Address> adresses;
 	
 	@ManyToOne

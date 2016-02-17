@@ -67,10 +67,23 @@ public class TestEntities {
 ////	    	   System.out.println(rest.getManager().getAccess().getAccessLevel());
 //	       }
 		
+		
 		CriteriaQuery<Order> cq = em.getCriteriaBuilder().createQuery(Order.class);
 	       cq.select(cq.from(Order.class));
 	       List<Order> orders = em.createQuery(cq).getResultList();
+	       Order ord = orders.get(0);
+	       ord.getCustomer().addNewRestaurant(ord);
+	       for (Restaurant rest : ord.getCustomer().getRestaurants()) {
+	    	   System.out.println("Restaurant: " + rest.getName() + " Restaurant Manager: " + rest.getManager().getEmail() + " Phone: " + rest.getPhone());
+	       }
+	       for (Customer cust : ord.getCustomer().getRestaurants().get(0).getCustomers()) {
+	    	   for(Address address : cust.getAdresses()) {	    		   
+	    		   System.out.println(cust.getEmail() + " " + address.getAddressTag() + " " + address.getStreetAddress() + " " + address.getCity());
+	    	   }
+	       }
 	       for(Order order : orders) {
+	    	   
+	    	   
 	    	   System.out.println(order.getCustomer().getEmail());
 	    	   System.out.println(order.getCustomer().getAccess().getAccessLevel());
 	    	   System.out.println(order.getOrderId());

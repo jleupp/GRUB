@@ -21,7 +21,7 @@ public class Address
 	private String state;
 	private String zipCode;
 	@Id
-	@Column(name="customer_email")
+	@Column(name="email")
 	private String email;
 	
 	
@@ -57,6 +57,24 @@ public class Address
 	}
 	public void setCustomerEmail(String customerEmail) {
 		this.email = customerEmail;
+	}
+	public String getAddressTag() {
+		return addressTag;
+	}
+	public String getStreetAddress() {
+		return streetAddress;
+	}
+	public String getCity() {
+		return city;
+	}
+	public String getState() {
+		return state;
+	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public String getEmail() {
+		return email;
 	}
 
 }
