@@ -9,9 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import client.Customer;
 
 @Entity @Table(name="restaurant")
 public class Restaurant
@@ -19,6 +22,9 @@ public class Restaurant
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@ManyToMany(mappedBy = "restaurants")
+	private List<Customer> customers;
 	
 	@Column(name="category_id")
 	private String categoryId;
@@ -157,6 +163,14 @@ public class Restaurant
 		return "Restaurant [id=" + id + ", categoryId=" + categoryId + ", name=" + name + ", openTime=" + openTime
 				+ ", closeTime=" + closeTime + ", phone=" + phone + ", managerEmail=" + manager.getEmail()
 				+ ", tableCount=" + tableCount + "]";
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void addCustomer(Customer customer) {
+		this.customers.add(customer);
 	}
 	
 	
