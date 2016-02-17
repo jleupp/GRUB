@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `manager` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `manager` (
   `email` VARCHAR(30) NOT NULL,
-  `phone` VARCHAR(14) NOT NULL,
+  `phone` VARCHAR(14) NOT NULL DEFAULT '',
   `password` VARCHAR(10) NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`email`),
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `menu_item` (
   `price` DECIMAL(7,2) NOT NULL,
   `description` VARCHAR(140) NULL,
   `rest_id` INT NOT NULL,
-  `temp_id` INT NULL,
+  `temp_id` ENUM('NORMAL', 'R', 'MR', 'M', 'MW', 'W') NOT NULL DEFAULT 'NORMAL',
   `menusection_id` INT NOT NULL,
   `menu_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -226,13 +226,14 @@ DROP TABLE IF EXISTS `order_detail` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `order_detail` (
-  `orders_id` INT NOT NULL,
+  `orderDeet_id` INT NOT NULL,
   `menuItems_id` INT NOT NULL,
   `lineItem` INT NULL,
   `quantity` INT NOT NULL,
-  PRIMARY KEY (`orders_id`, `menuItems_id`),
-  CONSTRAINT `fk_orderDetails_orders1`
-    FOREIGN KEY (`orders_id`)
+  `order_id` INT NOT NULL,
+  PRIMARY KEY (`orderDeet_id`, `menuItems_id`),
+  CONSTRAINT `fk_orderDetails_order_id`
+    FOREIGN KEY (`order_id`)
     REFERENCES `customer_order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -244,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
-CREATE INDEX `fk_orderDetails_orders1_idx` ON `order_detail` (`orders_id` ASC);
+CREATE INDEX `fk_orderDetails_orders1_idx` ON `order_detail` (`order_id` ASC);
 
 SHOW WARNINGS;
 CREATE INDEX `fk_orderDetails_menuItems1_idx` ON `order_detail` (`menuItems_id` ASC);
@@ -350,19 +351,19 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (1, 'Gyoza', 3.99, 'Pork gyoza with Joe\'s dipping sauce', 1, NULL, 1, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (2, 'Spring Rolls', 7.99, 'Chilled rice paper wraps with white chicken, tiger shrimp, or tofu', 1, NULL, 1, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (3, 'California Roll', 5.99, 'Real crab, avocado, cucumber roll', 1, NULL, 20, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (4, 'Tataki Salad', 12.99, 'Seared Ahi tuna, mixed greens, avocado, rice noodles', 1, NULL, 3, 1);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (5, 'Calamari', 11.00, 'Crispy calamari and spicey chili aioli', 2, NULL, 1, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (6, 'Pastiche', 26.00, 'Layers of spicy meatballs and cheese tortellini', 2, NULL, 2, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (7, 'Risotto', 8.00, 'Speck, butternut squash, and porcini', 2, NULL, 2, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (8, 'Tiramisu', 9.00, 'Espresso soaked lady fingers layered with ameretto, mascarpone, and finished with cocoa', 2, NULL, 4, 2);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (9, 'Shock Top', 4.00, 'Belgium White AVB 5.2%', 3, NULL, 5, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (10, 'Signature Margarita', 9.75, 'Cazadores Resposado cointreau, lime juice ', 3, NULL, 5, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (11, 'Bottomless Chips and Salsa', 3.95, NULL, 3, NULL, 1, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (12, 'Caesar Salad', 6.45, 'Romaine Lettuce, Croutons, Parmesan Cheese tossed in a Caesar dressing', 3, NULL, 3, 3);
-INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (13, 'Chicken add on', 3.00, 'Chicken add on for salad', 3, NULL, 6, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (1, 'Gyoza', 3.99, 'Pork gyoza with Joe\'s dipping sauce', 1, DEFAULT, 1, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (2, 'Spring Rolls', 7.99, 'Chilled rice paper wraps with white chicken, tiger shrimp, or tofu', 1, DEFAULT, 1, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (3, 'California Roll', 5.99, 'Real crab, avocado, cucumber roll', 1, DEFAULT, 20, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (4, 'Tataki Salad', 12.99, 'Seared Ahi tuna, mixed greens, avocado, rice noodles', 1, DEFAULT, 3, 1);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (5, 'Calamari', 11.00, 'Crispy calamari and spicey chili aioli', 2, DEFAULT, 1, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (6, 'Pastiche', 26.00, 'Layers of spicy meatballs and cheese tortellini', 2, DEFAULT, 2, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (7, 'Risotto', 8.00, 'Speck, butternut squash, and porcini', 2, DEFAULT, 2, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (8, 'Tiramisu', 9.00, 'Espresso soaked lady fingers layered with ameretto, mascarpone, and finished with cocoa', 2, DEFAULT, 4, 2);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (9, 'Shock Top', 4.00, 'Belgium White AVB 5.2%', 3, DEFAULT, 5, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (10, 'Signature Margarita', 9.75, 'Cazadores Resposado cointreau, lime juice ', 3, DEFAULT, 5, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (11, 'Bottomless Chips and Salsa', 3.95, NULL, 3, DEFAULT, 1, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (12, 'Caesar Salad', 6.45, 'Romaine Lettuce, Croutons, Parmesan Cheese tossed in a Caesar dressing', 3, DEFAULT, 3, 3);
+INSERT INTO `menu_item` (`id`, `name`, `price`, `description`, `rest_id`, `temp_id`, `menusection_id`, `menu_id`) VALUES (13, 'Chicken add on', 3.00, 'Chicken add on for salad', 3, DEFAULT, 6, 3);
 
 COMMIT;
 
@@ -376,6 +377,28 @@ INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) 
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('elijah.molnar@gmail.com', 'columns', 2, '(316)350-5067', '1971-01-05');
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('jeffrey.leupp@gmail.com', 'rowcol', 2, '(805)478-3754', '1983-03-29');
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('elenapignatelli@gmail.com', 'pipe', 2, '(860)307-6514', '1988-02-24');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `customer_order`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `gitgrubdb`;
+INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', CURDATE(), 'pending');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `order_detail`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `gitgrubdb`;
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (1, 1, 1, 5, 1);
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (2, 2, 2, 10, 1);
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (3, 3, 3, 2, 1);
 
 COMMIT;
 
