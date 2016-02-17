@@ -50,19 +50,60 @@ public class TestEntities {
 //	    	   System.out.println(rest.getManager().getAccess().getAccessLevel());
 //	       }
 //	       
-	       CriteriaQuery<Menu> cq = em.getCriteriaBuilder().createQuery(Menu.class);
-	       cq.select(cq.from(Menu.class));
-	       List<Menu> menus = em.createQuery(cq).getResultList();
-	       for(Menu menu : menus) {
-	    	   for (MenuItem item : menu.getItems()) {
-	    		   System.out.println("ITTERATING THROGH Items");
-	    		   System.out.println(item.getName());
-	    		   System.out.println(item.getDescription());
-	    		   System.out.println(item.getTemp().toString());
+//	       CriteriaQuery<Menu> cq = em.getCriteriaBuilder().createQuery(Menu.class);
+//	       cq.select(cq.from(Menu.class));
+//	       List<Menu> menus = em.createQuery(cq).getResultList();
+//	       for(Menu menu : menus) {
+//	    	   for (MenuItem item : menu.getItems()) {
+//	    		   System.out.println("ITTERATING THROGH Items");
+//	    		   System.out.println(item.getName());
+//	    		   System.out.println(item.getDescription());
+//	    		   System.out.println(item.getTemp().toString());
+//	    	   }
+//	    	   System.out.println(menu.getType());
+//	    	   System.out.println(menu.getStartTime());
+//	    	   System.out.println(menu.getEndTime());
+//	    	   System.out.print("_________________________________________________");
+////	    	   System.out.println(rest.getManager().getAccess().getAccessLevel());
+//	       }
+		
+		
+		CriteriaQuery<Order> cq = em.getCriteriaBuilder().createQuery(Order.class);
+	       cq.select(cq.from(Order.class));
+	       List<Order> orders = em.createQuery(cq).getResultList();
+	       Order ord = orders.get(0);
+	       ord.getCustomer().addNewRestaurant(ord);
+	       for (Restaurant rest : ord.getCustomer().getRestaurants()) {
+	    	   System.out.println("Restaurant: " + rest.getName() + " Restaurant Manager: " + rest.getManager().getEmail() + " Phone: " + rest.getPhone());
+	       }
+	       for (Customer cust : ord.getCustomer().getRestaurants().get(0).getCustomers()) {
+	    	   for(Address address : cust.getAdresses()) {	    		   
+	    		   System.out.println(cust.getEmail() + " " + address.getAddressTag() + " " + address.getStreetAddress() + " " + address.getCity());
 	    	   }
-	    	   System.out.println(menu.getType());
-	    	   System.out.println(menu.getStartTime());
-	    	   System.out.println(menu.getEndTime());
+	       }
+	       for(Order order : orders) {
+	    	   
+	    	   
+	    	   System.out.println(order.getCustomer().getEmail());
+	    	   System.out.println(order.getCustomer().getAccess().getAccessLevel());
+	    	   System.out.println(order.getOrderId());
+	    	   System.out.println("----------------------");
+	    	   for (OrderDetail od : order.getOrderDetails()) {
+	    		   System.out.println("ITTERATING THROGH Menu_Items");
+	    		   System.out.println("----------------------");
+	    		   System.out.println(od.getMenuItem().getName());
+	    		   System.out.println(od.getMenuItem().getDescription());
+	    		   System.out.println(od.getQuantity());
+	    		   System.out.println("\t\t" + od.getOrder().getOrderId());
+	    		   System.out.println("\t\t" + od.getOrder().getCustomer().getEmail());
+	    		   System.out.println("\t\t" + od.getMenuItem().getMenu().getStartTime());
+	    		   System.out.println("\t\t" + od.getMenuItem().getTemp());
+	    		   System.out.println("\t\t" + od.getMenuItem().getMenu().getRestaurant().getName());
+	    		   System.out.println("\t\t" + od.getMenuItem().getMenu().getRestaurant().getManager().getEmail());
+	    		   System.out.println("\t\t" + od.getMenuItem().getMenu().getRestaurant().getManager().getAccess().getAccessLevel());
+	    		   
+	    	   }         
+	    	   
 	    	   System.out.print("_________________________________________________");
 //	    	   System.out.println(rest.getManager().getAccess().getAccessLevel());
 	       }

@@ -8,37 +8,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="cutomer_order")
+@Table(name = "customer_order")
 public class Order
 {
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="order_id")
+	@Column(name = "order_id")
 	private int orderId;
+
+	@OneToMany(mappedBy = "order")
+	private List<OrderDetail> orderDetails;
+
+	@ManyToOne
+	@JoinColumn(name = "customer_email")
+	private Customer customer;
 	
-	@OneToMany(mappedBy= "order")
-	private List <OrderDetail> orderDetails;
-	
-	@Column(name="customer_email")
-	private String customerEmail;
-	
+
 	private Date dateOrdered;
-	
+
 	private String status;
 
-	public String getCustomerEmail()
-	{
-		return customerEmail;
-	}
 
-	public void setCustomerEmail(String customerEmail)
-	{
-		this.customerEmail = customerEmail;
-	}
+
+
+	
 
 	public Date getDateOrdered()
 	{
@@ -68,7 +67,27 @@ public class Order
 	@Override
 	public String toString()
 	{
-		return "Order [orderId=" + orderId + ", customerEmail=" + customerEmail + ", dateOrdered=" + dateOrdered
+		return "Order [orderId=" + orderId + ", customerEmail=" + customer.getEmail() + ", dateOrdered=" + dateOrdered
 				+ ", status=" + status + "]";
+	}
+
+	public List<OrderDetail> getOrderDetails()
+	{
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails)
+	{
+		this.orderDetails = orderDetails;
+	}
+
+	public Customer getCustomer()
+	{
+		return customer;
+	}
+
+	public void setCustomer(Customer customer)
+	{
+		this.customer = customer;
 	}
 }
