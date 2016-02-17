@@ -65,4 +65,5 @@ public class Manager implements Person
 		return "Manager [email=" + email + ", password=" + password + ", phone=" + phone + ", accessLevel=" + access.getAccessLevel()
 				+ "]";
 	}
+	
 }
