@@ -1,14 +1,14 @@
 package client;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +20,8 @@ public class Order
 	@Column(name="order_id")
 	private int orderId;
 	
-	@OneToOne
-	@JoinColumn(name="order_id",referencedColumnName="orders_id")
-	private Order order;
+	@OneToMany(mappedBy= "order")
+	private List <OrderDetail> orderDetails;
 	
 	@Column(name="customer_email")
 	private String customerEmail;
