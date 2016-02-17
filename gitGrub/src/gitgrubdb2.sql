@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `manager` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `manager` (
   `email` VARCHAR(30) NOT NULL,
-  `phone` VARCHAR(14) NOT NULL,
+  `phone` VARCHAR(14) NOT NULL DEFAULT '', 
   `password` VARCHAR(10) NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`email`),
