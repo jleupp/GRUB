@@ -33,6 +33,10 @@ public class Customer implements Person
 	
 	@Column(name="birth_day")
 	private Date birthDay;
+	
+	@OneToMany(mappedBy="customer")
+	private List<Order> orders;
+	
 	public String getEmail()
 	{
 		return email;
@@ -57,10 +61,6 @@ public class Customer implements Person
 	{
 		this.phone = phone;
 	}
-//	public int getAccessId()
-//	{
-//		return accessId;
-//	}
 	
 	public Access getAccess() {
 		return this.access;
