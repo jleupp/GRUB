@@ -7,11 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import entities.Access;
+import entities.Restaurant;
 @Entity 
 @Table(name="customer")
 public class Customer implements Person
@@ -21,6 +24,10 @@ public class Customer implements Person
 	
 	private String password;
 	private String phone;
+	
+	@ManyToMany
+	@JoinTable(name="order_history", joinColumns = @JoinColumn(name="customer_id"), inverseJoinColumns = @JoinColumn(name="restaurant_id"))
+	private List<Restaurant> restaurants;
 	
 	@OneToMany
 	@JoinColumn(name = "customer_email", referencedColumnName="email")
@@ -37,6 +44,12 @@ public class Customer implements Person
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders;
 	
+	public void addNewRestaurant(Order order) {
+		Restaurant rest = order.getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant();
+		restaurants.add(rest);
+		rest.addCustomer(this);
+		
+	}
 	public String getEmail()
 	{
 		return email;
@@ -85,6 +98,22 @@ public class Customer implements Person
 	{
 		return "Customer [email=" + email + ", password=" + password + ", phone=" + phone + ", accessLevel=" + access.getAccessLevel() + ", accessID= " + access.getId()
 				+ ", birthDay=" + birthDay + "]";
+	}
+	public List<Restaurant> getRestaurants() {
+		return restaurants;
+	}
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setRestaurants(List<Restaurant> restaurants) {
+		this.restaurants = restaurants;
+	}
+	
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+	public void addOrder(Order order) {
+		this.orders.add(order);
 	}
 	
 }
