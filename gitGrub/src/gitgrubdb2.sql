@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `manager` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `manager` (
   `email` VARCHAR(30) NOT NULL,
-  `phone` VARCHAR(14) NOT NULL DEFAULT '', 
+  `phone` VARCHAR(14) NOT NULL,
   `password` VARCHAR(10) NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`email`),
@@ -226,13 +226,14 @@ DROP TABLE IF EXISTS `order_detail` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `order_detail` (
-  `orders_id` INT NOT NULL,
+  `orderDeet_id` INT NOT NULL,
   `menuItems_id` INT NOT NULL,
   `lineItem` INT NULL,
   `quantity` INT NOT NULL,
-  PRIMARY KEY (`orders_id`, `menuItems_id`),
-  CONSTRAINT `fk_orderDetails_orders1`
-    FOREIGN KEY (`orders_id`)
+  `order_id` INT NOT NULL,
+  PRIMARY KEY (`orderDeet_id`, `menuItems_id`),
+  CONSTRAINT `fk_orderDetails_order_id`
+    FOREIGN KEY (`order_id`)
     REFERENCES `customer_order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -244,7 +245,7 @@ CREATE TABLE IF NOT EXISTS `order_detail` (
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
-CREATE INDEX `fk_orderDetails_orders1_idx` ON `order_detail` (`orders_id` ASC);
+CREATE INDEX `fk_orderDetails_orders1_idx` ON `order_detail` (`order_id` ASC);
 
 SHOW WARNINGS;
 CREATE INDEX `fk_orderDetails_menuItems1_idx` ON `order_detail` (`menuItems_id` ASC);
@@ -277,6 +278,40 @@ CREATE INDEX `customer_id_idx` ON `address` (`email` ASC);
 
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `order_history`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `order_history` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `order_history` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `restaurant_id` INT NOT NULL,
+  `customer_id` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_order_history_restaurant_id`
+    FOREIGN KEY (`restaurant_id`)
+    REFERENCES `restaurant` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_order_hisotry_customer_id`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `customer` (`email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `id_UNIQUE` ON `order_history` (`id` ASC);
+
+SHOW WARNINGS;
+CREATE INDEX `FK_order_history_restaurant_id_idx` ON `order_history` (`restaurant_id` ASC);
+
+SHOW WARNINGS;
+CREATE INDEX `FK_order_hisotry_customer_id_idx` ON `order_history` (`customer_id` ASC);
+
+SHOW WARNINGS;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -297,9 +332,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', DEFAULT, 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', '(555)555-5555', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', '(555)555-5555', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', '(555)555-5555', 'password', 1);
 
 COMMIT;
 
@@ -376,6 +411,28 @@ INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) 
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('elijah.molnar@gmail.com', 'columns', 2, '(316)350-5067', '1971-01-05');
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('jeffrey.leupp@gmail.com', 'rowcol', 2, '(805)478-3754', '1983-03-29');
 INSERT INTO `customer` (`email`, `password`, `access_id`, `phone`, `birth_day`) VALUES ('elenapignatelli@gmail.com', 'pipe', 2, '(860)307-6514', '1988-02-24');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `customer_order`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `gitgrubdb`;
+INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', CURDATE(), 'pending');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `order_detail`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `gitgrubdb`;
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (1, 1, 1, 5, 1);
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (2, 2, 2, 10, 1);
+INSERT INTO `order_detail` (`orderDeet_id`, `menuItems_id`, `lineItem`, `quantity`, `order_id`) VALUES (3, 3, 3, 2, 1);
 
 COMMIT;
 
