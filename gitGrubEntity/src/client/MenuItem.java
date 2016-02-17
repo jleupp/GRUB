@@ -1,23 +1,48 @@
 package client;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity @Table(name="menu_item")
+import entities.Menu;
+
+@Entity 
+@Table(name="menu_item")
 public class MenuItem
 {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	private String name;
 	private Double price;
 	private String description;
+	
 	@Column(name="rest_id")
 	private int restId;
-	@Column(name="temp_id")
-	private int tempId;
-	@Column(name="menusection_id")
-	private int menuSectionId;
-	@Column(name="menu_id")
-	private int menuId;
+	
+	@ManyToOne
+	@JoinColumn(name="menu_id", referencedColumnName="menu_id")
+	private Menu menu;
+	
+	@ManyToOne
+	@JoinColumn(name="menusection_id", referencedColumnName="id")
+	private MenuSection section;
+	
+	 public enum TEMP
+	 {
+		 NORMAL,R,MR,M,MW,W
+	    }
+	    @Enumerated(EnumType.STRING)
+	    @Column(name="temp_id")
+	    private TEMP temp;
 	
 	public String getName()
 	{
@@ -51,39 +76,38 @@ public class MenuItem
 	{
 		this.restId = restId;
 	}
-	public int getTempId()
+	public TEMP getTemp()
 	{
-		return tempId;
+		return temp;
 	}
-	public void setTempId(int tempId)
+	public void setTemp(TEMP temp)
 	{
-		this.tempId = tempId;
+		this.temp = temp;
 	}
-	public int getMenuSectionId()
+	
+	public Menu getMenu()
 	{
-		return menuSectionId;
+		return this.menu;
 	}
-	public void setMenuSectionId(int menuSectionId)
+	public void setMenu(Menu menu)
 	{
-		this.menuSectionId = menuSectionId;
-	}
-	public int getMenuId()
-	{
-		return menuId;
-	}
-	public void setMenuId(int menuId)
-	{
-		this.menuId = menuId;
+		this.menu = menu;
 	}
 	public int getId()
 	{
 		return id;
 	}
+	public MenuSection getSection() {
+		return section;
+	}
+	public void setSection(MenuSection section) {
+		this.section = section;
+	}
 	@Override
 	public String toString()
 	{
 		return "MenuItem [id=" + id + ", name=" + name + ", price=" + price + ", description=" + description
-				+ ", restId=" + restId + ", tempId=" + tempId + ", menuSectionId=" + menuSectionId + ", menuId="
-				+ menuId + "]";
+				+ ", restId=" + restId + ", temp=" + temp.toString() + ", menuSection=" + section.getSection() + ", menuTyep="
+				+ menu.getType() + "]";
 	}
 }

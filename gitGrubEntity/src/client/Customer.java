@@ -1,20 +1,38 @@
 package client;
 
-import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
-import java.util.*;
-@Entity @Table(name="customer")
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import entities.Access;
+@Entity 
+@Table(name="customer")
 public class Customer implements Person
 {
 	@Id
 	private String email;
+	
 	private String password;
 	private String phone;
-	@Column(name="access_id")
-	private int accessId;
+	
+	@OneToMany
+	@JoinColumn(name = "customer_email", referencedColumnName="email")
+	private List<Address> adresses;
+	
+	@ManyToOne
+	@JoinColumn(name="access_id", referencedColumnName="id")
+
+	private Access access;
+	
 	@Column(name="birth_day")
-	@Temporal(TemporalType.DATE)
-	private Calendar birthDay;
+	private Date birthDay;
 	public String getEmail()
 	{
 		return email;
@@ -39,22 +57,33 @@ public class Customer implements Person
 	{
 		this.phone = phone;
 	}
-	public int getAccessId()
-	{
-		return accessId;
+//	public int getAccessId()
+//	{
+//		return accessId;
+//	}
+	
+	public Access getAccess() {
+		return this.access;
 	}
-	public void setAccessId(int accessId)
-	{
-		this.accessId = accessId;
+	public void setAccess(Access access) {
+		this.access = access;
 	}
-	public Calendar getBirthDay()
+	
+	public Date getBirthDay()
 	{
 		return birthDay;
+	}
+	
+	public List<Address> getAdresses() {
+		return adresses;
+	}
+	public void setAdresses(List<Address> adresses) {
+		this.adresses = adresses;
 	}
 	@Override
 	public String toString()
 	{
-		return "Customer [email=" + email + ", password=" + password + ", phone=" + phone + ", accessId=" + accessId
+		return "Customer [email=" + email + ", password=" + password + ", phone=" + phone + ", accessLevel=" + access.getAccessLevel() + ", accessID= " + access.getId()
 				+ ", birthDay=" + birthDay + "]";
 	}
 	
