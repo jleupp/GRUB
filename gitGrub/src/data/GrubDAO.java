@@ -1,8 +1,12 @@
 package data;
 
-import entities.LogInCredentials;
+import java.util.List;
+
+import client.LogInCredentials;
+import entities.Restaurant;
 
 public interface GrubDAO {
 
-	public LogInCredentials checkManagerCred (LogInCredentials login, String restaurant);
+	public LogInCredentials checkUserCred (LogInCredentials login);
+	public List<Restaurant> browseAllRestaurants();
 }

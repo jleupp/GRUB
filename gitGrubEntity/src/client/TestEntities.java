@@ -7,7 +7,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 
-import entities.Menu;
+import entities.Address;
+import entities.Customer;
+import entities.Order;
+import entities.OrderDetail;
 import entities.Restaurant;
 
 public class TestEntities {

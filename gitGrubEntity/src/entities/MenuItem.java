@@ -1,4 +1,4 @@
-package client;
+package entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import entities.Menu;
 
 @Entity 
 @Table(name="menu_item")

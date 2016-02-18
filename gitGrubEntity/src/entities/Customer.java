@@ -1,4 +1,4 @@
-package client;
+package entities;
 
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import entities.Access;
-import entities.Restaurant;
+import client.Person;
 @Entity 
 @Table(name="customer")
 public class Customer implements Person
