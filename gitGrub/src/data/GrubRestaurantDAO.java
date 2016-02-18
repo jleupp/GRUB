@@ -7,12 +7,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import client.LogInCredentials;
 import client.Person;
 import entities.Customer;
 import entities.Manager;
+import entities.Menu;
 import entities.Restaurant;
 
 @Transactional
@@ -20,8 +22,15 @@ public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
 	
+	
+	
+	public Menu getUserSelectedMenu(String s) {
+		String[] tokens = s.split(" ");
+		Menu menu;
+		return menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
+	}
+	
 	public LogInCredentials checkUserCred (LogInCredentials login) {
-
 //		System.out.println("IN CHECKUSER ID");
 		CriteriaQuery<Manager> cq = em.getCriteriaBuilder().createQuery(Manager.class);
 	       cq.select(cq.from(Manager.class));

@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import client.LogInCredentials;
 import data.GrubDAO;
+import entities.Menu;
+import entities.MenuItem;
 
 @Controller
 @SessionAttributes({"personCred", "orderList"})
@@ -31,8 +33,21 @@ public class GrubController {
 		String s = "Order Entity Instantiation";
 		return s;
 	}
+	
+	@RequestMapping(path="menu.do", method = RequestMethod.POST)
+	public ModelAndView displayRestaurantsMenu(@RequestParam("menuchoice") String s) {
+		ModelAndView mv = new ModelAndView("menu.jsp");
+		Menu menu =grubDAO.getUserSelectedMenu(s);
+		for(MenuItem item : menu.getItems()) {
+			System.out.println(item.getName() + " " + item.getDescription());
+			System.out.println("$" + item.getPrice());
+		}
+		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
+		
+		return null;
+	}
 
-	@RequestMapping(path="browse.do", method = RequestMethod.POST)
+	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)
 	public ModelAndView browseRestaurants() {
 		ModelAndView mv = new ModelAndView("browse.jsp");
 		mv.addObject("restList", grubDAO.browseAllRestaurants());
