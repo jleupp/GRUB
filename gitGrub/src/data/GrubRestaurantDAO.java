@@ -1,5 +1,7 @@
 package data;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import client.LogInCredentials;
@@ -15,7 +16,8 @@ import client.Person;
 import entities.Customer;
 import entities.Manager;
 import entities.Menu;
-import entities.MenuSection;
+import entities.Order;
+import entities.OrderDetail;
 import entities.Restaurant;
 
 @Transactional
@@ -25,6 +27,29 @@ public class GrubRestaurantDAO implements GrubDAO {
 	
 	
 	
+	public Order buildOrder(LogInCredentials login, Order order, String s) {
+		String[] tokens = s.split(",");
+		Menu menu = findMenuById(Integer.parseInt(tokens[0]));
+		System.out.println(Timestamp.from(Instant.now()));
+		order.setDateOrdered(Timestamp.from(Instant.now()));
+		order.setStatus("pending");
+		List<OrderDetail> orderDetails = new ArrayList<>();
+		for (int i = 1; i<tokens.length; i++) {
+			OrderDetail od = new OrderDetail();
+			od.setMenuItem(menu.getMenuItemByID(Integer.parseInt(tokens[i])));
+			od.setLineItem(i);
+			od.setQuantity(1);
+			orderDetails.add(od);
+		}
+		order.setOrderDetails(orderDetails);
+		
+//		order.setDateOrdered();
+		if(login.getPersonLoggedIn() instanceof Customer) {
+			order.setCustomer(((Customer)login.getPersonLoggedIn()));
+			((Customer)login.getPersonLoggedIn()).addPendingOrder(order);
+		}
+		return order;
+	}
 	public Menu getUserSelectedMenu(String s) {
 		String[] tokens = s.split("&&");
 		Menu menu;
@@ -72,5 +97,18 @@ public class GrubRestaurantDAO implements GrubDAO {
 	       List<Restaurant> rests = em.createQuery(cq).getResultList();
 //		System.out.println(rests.getClass().getName());
 		return rests;
+	}
+	
+	public Menu findMenuById(int i) {
+		CriteriaQuery<Menu> cq = em.getCriteriaBuilder().createQuery(Menu.class);
+			cq.select(cq.from(Menu.class));
+			List<Menu> menus = em.createQuery(cq).getResultList();
+			for(Menu menu : menus) {
+				if(menu.getMenuId() == i) {
+					return menu;
+				} else continue;
+			}
+			System.out.println("COULDN'T FIND A MENU MATCH IN DAO findMenuById");
+			return null;
 	}
 }

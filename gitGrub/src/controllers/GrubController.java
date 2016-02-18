@@ -1,5 +1,8 @@
 package controllers;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import client.LogInCredentials;
 import data.GrubDAO;
-import entities.Menu;
-import entities.MenuItem;
 import entities.Order;
 
 @Controller
@@ -33,11 +34,24 @@ public class GrubController {
 		return order;
 	}
 	
+	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
+	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
+		System.out.println(info);
+		System.out.println("STRING SENT FROM MENU.JSP");
+		ModelAndView mv = new ModelAndView("order.jsp");
+		order = grubDAO.buildOrder(login, order, info);
+		
+		mv.addObject("Order", order);
+		System.out.println(order.getStatus() + order.getCustomer());
+		return mv;
+	}
+	
 	@RequestMapping(path="menu.do", method = RequestMethod.POST)
 	public ModelAndView displayRestaurantsMenu(@RequestParam("menuchoice") String s) {
 		ModelAndView mv = new ModelAndView("menu.jsp");
 		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
 		mv.setViewName("menu.jsp");
+		System.out.println(Timestamp.from(Instant.now()));
 		return mv;
 //		Menu menu = grubDAO.getUserSelectedMenu(s);
 //		for(MenuItem item : menu.getItems()) {

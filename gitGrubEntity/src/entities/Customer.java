@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import client.Person;
 @Entity 
@@ -23,6 +24,9 @@ public class Customer implements Person
 	
 	private String password;
 	private String phone;
+	
+	@Transient
+	private Order pendingOrder;
 	
 	@ManyToMany
 	@JoinTable(name="order_history", joinColumns = @JoinColumn(name="customer_id"), inverseJoinColumns = @JoinColumn(name="restaurant_id"))
@@ -42,6 +46,10 @@ public class Customer implements Person
 	
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders;
+	
+	public void addPendingOrder(Order order) {
+		this.pendingOrder = order;
+	}
 	
 	public void addNewRestaurant(Order order) {
 		Restaurant rest = order.getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant();

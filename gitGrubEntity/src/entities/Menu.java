@@ -53,6 +53,15 @@ public class Menu
 		return sections;
 	}
 	
+	public MenuItem getMenuItemByID(int i) {
+		for (MenuItem mi : this.items) {
+			if(mi.getId() == i) {
+				return mi;
+			} else continue;
+		}
+		System.out.println("DID NOT MATCH MENU ITEM BY ID IN MENU.class");
+		return null;
+	}
 	
 	public String getType()
 	{
