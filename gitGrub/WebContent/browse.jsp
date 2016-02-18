@@ -28,7 +28,17 @@
 							<table id="tableList">
 								<tbody> -->
 							<c:forEach var="restaurant" items="${restList}">
-								${restaurant.name}<br>
+								${restaurant.name}
+							<form action="menu.do" method="POST"><label>
+									MENU: <select name="menuchoice">
+								<c:forEach var="menu" items="${restaurant.menus}">
+									<option>View Menus</option>
+									<option value="${menu.restaurant.id} ${menu.type}">${menu.type}</option>
+									</select>
+							</label>
+								</c:forEach>
+							<input type="submit" value="View Menu" />
+							</form><br>
 							</c:forEach>
 							<!-- 	</tbody>
 							</table>
