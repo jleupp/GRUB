@@ -36,8 +36,13 @@ public class GrubController {
 	
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
 	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
+		System.out.println(info);
+		System.out.println("STRING SENT FROM MENU.JSP");
 		ModelAndView mv = new ModelAndView("order.jsp");
 		order = grubDAO.buildOrder(login, order, info);
+		
+		mv.addObject("Order", order);
+		System.out.println(order.getStatus() + order.getCustomer());
 		return mv;
 	}
 	

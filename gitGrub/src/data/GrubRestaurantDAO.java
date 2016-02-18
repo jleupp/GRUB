@@ -28,7 +28,7 @@ public class GrubRestaurantDAO implements GrubDAO {
 	
 	
 	public Order buildOrder(LogInCredentials login, Order order, String s) {
-		String[] tokens = s.split("&&");
+		String[] tokens = s.split(",");
 		Menu menu = findMenuById(Integer.parseInt(tokens[0]));
 		System.out.println(Timestamp.from(Instant.now()));
 		order.setDateOrdered(Timestamp.from(Instant.now()));

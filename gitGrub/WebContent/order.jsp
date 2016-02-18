@@ -18,10 +18,11 @@
 
 	<a href="browse.jsp">Browse other menus</a>
 
+		<p>${Order.status}</p>
 	<table>
+				<h2>Your Order is ${Order.status}</h2>
 		<c:forEach var="details" items="${Order.orderDetails}">
 			<tr>
-				<h2>Your Order # is ${Order.orderId}</h2>
 			</tr>
 			<TR>
 				<TH ALIGN="center">Quantity</TH>
@@ -33,13 +34,13 @@
 						<input type="number" name="quantity" value="${details.quantity}">
 						<input type="submit" value="Submit" />
 					</form></TD>
-				<TD>${details.menuItem}</TD>
+				<TD>${details.menuItem.name}</TD>
 				<TD>${details.menuItem.price}</TD>
 			</TR>
 		</c:forEach>
 	</table>
 
-	<h2>Thank you for ordering from ${Menu.restaurant.name}!</h2>
+	<h2>Thank you for ordering from ${Order.orderDetails.get(0).menuItem.menu.restaurant.name}!</h2>
 
 	<%--<form action="quantity.do" method="POST">
     <input type="number" name="quantity" value= "${details.quantity}">

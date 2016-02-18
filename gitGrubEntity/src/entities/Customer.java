@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import client.Person;
 @Entity 
@@ -23,6 +24,8 @@ public class Customer implements Person
 	
 	private String password;
 	private String phone;
+	
+	@Transient
 	private Order pendingOrder;
 	
 	@ManyToMany

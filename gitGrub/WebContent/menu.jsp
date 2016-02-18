@@ -23,27 +23,27 @@
 					<div class="center" id="restName"><h1>${Menu.restaurant.name} </h1></div>
 
 						<div class="center">
-							<form action="order.do" method="POST">
-							<input type="hidden" value="${Menu.menuId}&&">
+							<form action="createorder.do" method="POST">
+							<input type="hidden" value="${Menu.menuId}" name = "orderinfo">
 							<c:forEach var="section" items="${Menu.menuSections}">
 								<div class="subHeader"><h2>${section.section}</h2>
 								<c:forEach var="item" items="${Menu.items}">
 									<c:choose>
 										<c:when test="${item.section.section.equals(section.section)}">
-										<input type="checkbox" value="${item.id}&&">${item.name} &#36;${item.price}&nbsp;&nbsp;
+										<input type="checkbox" name="orderinfo" value="${item.id}">${item.name} &#36;${item.price}&nbsp;&nbsp;
 										</c:when>
 										
 									</c:choose>
 								</c:forEach>
 									
 							</c:forEach>
+	<div class="center" id="inputOrder"><input type="submit" value="Order Now" id="submitOrder"></div>
 							</form><br>
 						</div><br><br>
 					</div>
 				</div>
 			</div>
 	</div>
-	<div class="center" id="inputOrder"><input type="submit" value="Order Now" name="" id="submitOrder"></div>
 	<div><p></p></div>
 	<div class="center"id="returnLink"><a href="index.html">Return to Login</a></div>
 </body>
