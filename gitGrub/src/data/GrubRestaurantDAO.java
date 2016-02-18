@@ -15,6 +15,7 @@ import client.Person;
 import entities.Customer;
 import entities.Manager;
 import entities.Menu;
+import entities.MenuSection;
 import entities.Restaurant;
 
 @Transactional
@@ -25,8 +26,12 @@ public class GrubRestaurantDAO implements GrubDAO {
 	
 	
 	public Menu getUserSelectedMenu(String s) {
-		String[] tokens = s.split(" ");
+		String[] tokens = s.split("&&");
 		Menu menu;
+		menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
+//		for (MenuSection ms : menu.getMenuSections(menu.getItems())) {
+//			System.out.println(ms.getSection() + "\t\t FROM DAO");
+//		}
 		return menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
 	}
 	

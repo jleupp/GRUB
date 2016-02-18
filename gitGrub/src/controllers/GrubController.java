@@ -13,6 +13,7 @@ import client.LogInCredentials;
 import data.GrubDAO;
 import entities.Menu;
 import entities.MenuItem;
+import entities.Order;
 
 @Controller
 @SessionAttributes({"personCred", "orderList"})
@@ -27,24 +28,23 @@ public class GrubController {
 	}
 
 	@ModelAttribute("orderList")
-	public String initOrderList() {
-		//HERE WE WILL INIT AN ORDER ENTITY
-		//THE ORDER ENTITY HAS A LIST OF ORDER DETAIL OBJECTS
-		String s = "Order Entity Instantiation";
-		return s;
+	public Order initOrderList() {
+		Order order = new Order();
+		return order;
 	}
 	
 	@RequestMapping(path="menu.do", method = RequestMethod.POST)
 	public ModelAndView displayRestaurantsMenu(@RequestParam("menuchoice") String s) {
 		ModelAndView mv = new ModelAndView("menu.jsp");
-		Menu menu =grubDAO.getUserSelectedMenu(s);
-		for(MenuItem item : menu.getItems()) {
-			System.out.println(item.getName() + " " + item.getDescription());
-			System.out.println("$" + item.getPrice());
-		}
 		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
-		
-		return null;
+		mv.setViewName("menu.jsp");
+		return mv;
+//		Menu menu = grubDAO.getUserSelectedMenu(s);
+//		for(MenuItem item : menu.getItems()) {
+//			System.out.println(item.getName() + " " + item.getDescription());
+//			System.out.println("$" + item.getPrice());
+//		}
+//		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
 	}
 
 	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)
