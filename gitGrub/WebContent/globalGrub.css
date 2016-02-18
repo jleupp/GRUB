@@ -1,0 +1,37 @@
+/*====================DEBUG BOXES=================================================*/
+div,span{
+	border:0px solid black;
+}
+/*====================DEFAULTS=================================================*/
+body{
+	/*background-image:url("http://www.eatitatlanta.com/wp-content/uploads/2010/12/mosaic94d2adbc3e7fdfc80c32a1a8f0466281df9513e9.jpg");*/
+
+}
+/*==================classes======================================================*/
+.lightgrey{
+	color:lightgrey;
+}
+.center{
+	text-align:center;
+}
+
+
+
+/*==================ID's=========================================================*/
+#logo{
+	width:2em;
+	length:2em;
+}
+#restName{
+	
+}
+#returnLink a:link,
+#returnLink a:active,
+#returnLink a:visited,
+#returnLink a:hover{
+	color:black;
+	text-decoration:none;'
+}
+#returnLink a:hover{
+	text-decoration:underline;'
+}
