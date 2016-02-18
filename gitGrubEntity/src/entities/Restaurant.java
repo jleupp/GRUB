@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import client.Customer;
-
 @Entity @Table(name="restaurant")
 public class Restaurant
 {

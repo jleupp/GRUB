@@ -38,7 +38,7 @@ DROP TABLE IF EXISTS `manager` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `manager` (
   `email` VARCHAR(30) NOT NULL,
-  `phone` VARCHAR(14) NOT NULL DEFAULT '',
+  `phone` VARCHAR(14) NOT NULL,
   `password` VARCHAR(10) NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`email`),
@@ -51,6 +51,9 @@ ENGINE = InnoDB;
 
 SHOW WARNINGS;
 CREATE INDEX `access_id_idx` ON `manager` (`access_id` ASC);
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `email_UNIQUE` ON `manager` (`email` ASC);
 
 SHOW WARNINGS;
 
@@ -278,6 +281,40 @@ CREATE INDEX `customer_id_idx` ON `address` (`email` ASC);
 
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- Table `order_history`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `order_history` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `order_history` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `restaurant_id` INT NOT NULL,
+  `customer_id` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_order_history_restaurant_id`
+    FOREIGN KEY (`restaurant_id`)
+    REFERENCES `restaurant` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_order_hisotry_customer_id`
+    FOREIGN KEY (`customer_id`)
+    REFERENCES `customer` (`email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+CREATE UNIQUE INDEX `id_UNIQUE` ON `order_history` (`id` ASC);
+
+SHOW WARNINGS;
+CREATE INDEX `FK_order_history_restaurant_id_idx` ON `order_history` (`restaurant_id` ASC);
+
+SHOW WARNINGS;
+CREATE INDEX `FK_order_hisotry_customer_id_idx` ON `order_history` (`customer_id` ASC);
+
+SHOW WARNINGS;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -298,9 +335,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', DEFAULT, 'password', 1);
-INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', DEFAULT, 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('tokyo_joe@mail.com', '(555)555-5555', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@panzano.com', '(555)555-5555', 'password', 1);
+INSERT INTO `manager` (`email`, `phone`, `password`, `access_id`) VALUES ('manager@SB.com', '(555)555-5555', 'password', 1);
 
 COMMIT;
 
@@ -386,7 +423,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', CURDATE(), 'pending');
+INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', 'CURDATE()', 'pending');
 
 COMMIT;
 

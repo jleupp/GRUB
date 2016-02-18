@@ -13,8 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import client.MenuItem;
-
 @Entity
 @Table(name="menu")
 public class Menu
