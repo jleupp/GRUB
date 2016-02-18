@@ -18,28 +18,36 @@
 		</header>
 			<div id="queryResultsOuter">
 				<div id="queryResultsInner">
-					<div id="sectionheader"><h1 class="sectionheader">All Restaurants</h1></div>
+					<div id="sectionheader"><h1 class="sectionheader">${Menu.restaurant.name} ${Menu.type} Menu</h1></div>
 					<div id="storeList">
-						<div class="subHeader"><h2>${fn:length(restList)} Restaurants in dataBase!</h2>
+						
 							<h2><a href="index.html">Return to Login</a></h2>
 						</div>
 
 						<!-- <div style="overflow-x:auto;">
 							<table id="tableList">
 								<tbody> -->
-							<c:forEach var="restaurant" items="${restList}">
-								${restaurant.name}
-							<form action="menu.do" method="POST"><label>
-									MENU: <select name="menuchoice">
-								<c:forEach var="menu" items="${restaurant.menus}">
+							<form action="order.do" method="POST">
+							<c:forEach var="section" items="${Menu.menuSections}">
+								<div class="subHeader"><h2>${section.section}</h2>
+								<c:forEach var="item" items="${Menu.items}">
+									<c:choose>
+										<c:when test="${item.section.section.equals(section.section)}">
+											${item.name}<br>
+										</c:when>
+										<%-- <c:otherwise>${item.section.section} ${section.section}<br></c:otherwise> --%>
+									</c:choose>
+								</c:forEach>
+									<!-- MENU: <select name="menuchoice"> -->
+							<%-- 	<c:forEach var="menu" items="${restaurant.menus}">
 									<option>View Menus</option>
 									<option value="${menu.restaurant.id}&&${menu.type}">${menu.type}</option>
 									</select>
-							</label>
-								</c:forEach>
-							<input type="submit" value="View Menu" />
-							</form><br>
+							
+								</c:forEach> --%>
+							<!-- <input type="submit" value="View Menu" /> -->
 							</c:forEach>
+							</form><br>
 							<!-- 	</tbody>
 							</table>
 						</div> -->

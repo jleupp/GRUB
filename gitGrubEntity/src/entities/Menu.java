@@ -1,6 +1,8 @@
 package entities;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -36,6 +38,20 @@ public class Menu
 	
 	@OneToMany(mappedBy="menu")
 	private List<MenuItem> items;
+	
+	public List<MenuSection> getMenuSections() {
+		List<MenuSection> sections = new ArrayList<>();
+		for (MenuItem mi : this.getItems()) {
+			if(!sections.contains(mi.getSection())) {
+				sections.add(mi.getSection());
+			} else {
+				System.out.println(mi.getSection() + "IS ALREADY IN SECTION LIST");
+			}
+		}
+//		this.getRestaurant().getName()
+		Collections.sort(sections);
+		return sections;
+	}
 	
 	
 	public String getType()
