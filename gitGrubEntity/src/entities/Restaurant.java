@@ -52,6 +52,15 @@ public class Restaurant
 	@OneToMany(mappedBy="restaurant")
 	private List<Menu> menus;
 
+	public Menu getMenu(String s) {
+		
+		for (Menu menu :this.getMenus()) {
+			if(menu.getType().equals(s)) {
+				return menu;
+			} else continue;
+		}
+		return null;
+	}
 	public String getCategoryId()
 	{
 		return categoryId;

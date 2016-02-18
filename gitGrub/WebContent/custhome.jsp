@@ -11,7 +11,7 @@
 
 <ul>
 <li> 
-<a href="GetAllRestaurants.do">Browse Restaurants</a> <br/>
+<a href="browse.do">Browse Restaurants</a> <br/>
 </li>
 
 </ul>
