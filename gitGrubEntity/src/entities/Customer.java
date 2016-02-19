@@ -3,6 +3,7 @@ package entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,41 +39,53 @@ public class Customer implements Person
 	
 	@ManyToOne
 	@JoinColumn(name="access_id", referencedColumnName="id")
-
 	private Access access;
 	
 	@Column(name="birth_day")
 	private Date birthDay;
 	
-	@OneToMany(mappedBy="customer")
+	@OneToMany(mappedBy="customer")//, cascade = CascadeType.PERSIST)
 	private List<Order> orders;
 	
 	public void addPendingOrder(Order order) {
+		System.out.println("IN CUSTOMER addPending " + order.getDateOrdered());
 		this.pendingOrder = order;
+	}
+	
+	public Order getPendingOrder() {
+		return this.pendingOrder;
 	}
 	
 	public void addNewRestaurant(Order order) {
 		Restaurant rest = order.getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant();
-		restaurants.add(rest);
-		rest.addCustomer(this);
-		
+		if (!restaurants.contains(rest)) {
+			this.restaurants.add(rest);
+			System.out.println("CUSTOMERS RESTAURANT LIST DIDN'T HAVE " + rest.getName() + "SO ADDED TO LIST");
+		} else {
+			System.out.println("CUSTOMERS RESTAURANT LIST ALREADY CONTAINED " + rest.getName() + "SO DID NOT ADD TO LIST");
+		}
 	}
+	
 	public String getEmail()
 	{
-		return email;
+		return this.email;
 	}
+	
 	public void setEmail(String email)
 	{
 		this.email = email;
 	}
+	
 	public String getPassword()
 	{
 		return password;
 	}
+	
 	public void setPassword(String password)
 	{
 		this.password = password;
 	}
+	
 	public String getPhone()
 	{
 		return phone;
@@ -120,6 +133,7 @@ public class Customer implements Person
 		this.birthDay = birthDay;
 	}
 	public void addOrder(Order order) {
+		System.out.println("IN CUSTOMER addOrder " + order.getDateOrdered());
 		this.orders.add(order);
 	}
 	

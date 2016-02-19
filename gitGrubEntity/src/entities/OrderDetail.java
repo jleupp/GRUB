@@ -1,5 +1,6 @@
 package entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ public class OrderDetail
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "orderDeet_id")
 	private int orderDeetId;
+	
 	private int lineItem;
 	private int quantity;
 
@@ -26,9 +28,16 @@ public class OrderDetail
 	private MenuItem menuItem;
 
 	@ManyToOne
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
 	private Order order;
 
+	public void setFUCKINGORDER(Order order) {
+		this.order = order;
+		
+	}
+	public void setId(int id) {
+		this.orderDeetId = id;
+	}
 	public int getLineItem()
 	{
 		return lineItem;

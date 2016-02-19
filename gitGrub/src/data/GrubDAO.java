@@ -13,4 +13,6 @@ public interface GrubDAO {
 	public List<Restaurant> browseAllRestaurants();
 	public Menu	getUserSelectedMenu(String s);
 	public Order buildOrder(LogInCredentials login, Order order, String s);
+	public void submitAndFinalizeOrder(LogInCredentials login, Order order);
+	
 }

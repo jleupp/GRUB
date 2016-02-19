@@ -9,12 +9,12 @@
 <link rel="stylesheet" type="text/css" href="globalGrub.css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>git Grub</title>
+<title>gitGrub</title>
 <link rel="stylesheet" href="css/normalize.css">
 <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-	<div id="container">
+	
 		<header id="">
 			<div><IMG id="logo" src="http://uxrepo.com/static/icon-sets/mfg-labs/svg/github-circled-alt.svg"><span class="lightgrey">Grub</span></div>
 		</header>
@@ -26,11 +26,13 @@
 							<form action="createorder.do" method="POST">
 							<input type="hidden" value="${Menu.menuId}" name = "orderinfo">
 							<c:forEach var="section" items="${Menu.menuSections}">
-								<div class="subHeader"><h2>${section.section}</h2>
+								<h2 class="center">${section.section}</h2>
 								<c:forEach var="item" items="${Menu.items}">
 									<c:choose>
 										<c:when test="${item.section.section.equals(section.section)}">
-										<input type="checkbox" name="orderinfo" value="${item.id}">${item.name} &#36;${item.price}&nbsp;&nbsp;
+										<div class="showItem"><input type="checkbox" name="orderinfo" value="${item.id}">&nbsp;${item.name} <fmt:setLocale value="en_US"/>
+										<fmt:formatNumber value="${item.price}" type="currency"/>
+										<br><div style="border:0px solid;" class="showDescription">${item.description}</div></div>
 										</c:when>
 										
 									</c:choose>
@@ -42,9 +44,13 @@
 						</div><br><br>
 					</div>
 				</div>
-			</div>
-	</div>
-	<div><p></p></div>
+			
+	
+	<!--<div><p></p></div>
 	<div class="center"id="returnLink"><a href="index.html">Return to Login</a></div>
+	</div><p>here ${Menu.restaurant}</p>
+	<div><iframe width="300px" id="displayPageMap" src="https://www.google.com/maps/embed/v1/place?q=${contact.address} }+
+				${contact.stName}+${contact.city}+${contact.state}+${contact.zip}
+				&key=AIzaSyAN0om9mFmy1QN6Wf54tXAowK4eT0ZUPrU"></iframe></div>-->
 </body>
 </html>

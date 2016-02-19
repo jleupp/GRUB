@@ -25,7 +25,35 @@ public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
 	
-	
+	public void submitAndFinalizeOrder(LogInCredentials login, Order order) {
+		System.out.println("IN SUBMIT AND FINALIZE ORDER");
+		//Set Pending order Status to Submitted
+		order.setStatus("submitted");
+		//Get a managed customer Bean
+		Customer p = em.find(Customer.class, login.getPersonLoggedIn().getEmail());
+		
+		System.out.println(em.contains(p) + " " + p.getClass() + " is a managed object");
+		
+		//Add the restaurant ordered from to customers previous restaurant list and add order
+		//to previous orders list		
+		p.addNewRestaurant(login.getPersonLoggedIn().getPendingOrder());
+		p.addOrder(order);
+		//Get a managed Restaurant Bean
+		Restaurant r = em.find(Restaurant.class, login.getPersonLoggedIn().getPendingOrder().getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant().getId());
+		//Add customer to restaurants Customer List
+		r.addCustomer(p);
+		//Merge updated customer and restaurant Beans [UPDATE] & Persist the Order and Order_Details submitted from user [CREATE]
+		try {
+			System.out.println("Prior to merge cascade of Customer - Order - OrderItem");
+			em.merge(p);
+			em.merge(r);
+		} catch(Exception e) {
+			System.out.println("ERRAH IN THE SUBMIT MERGE");
+			System.out.println(e.getMessage());
+		}
+
+		// persit the created order to the db, this cascades all the included order items [CREATE]
+	}
 	
 	public Order buildOrder(LogInCredentials login, Order order, String s) {
 		String[] tokens = s.split(",");
@@ -33,14 +61,25 @@ public class GrubRestaurantDAO implements GrubDAO {
 		System.out.println(Timestamp.from(Instant.now()));
 		order.setDateOrdered(Timestamp.from(Instant.now()));
 		order.setStatus("pending");
+//		order.setOrderId(0);
 		List<OrderDetail> orderDetails = new ArrayList<>();
+		
+		System.out.println(order.getStatus());
+		
 		for (int i = 1; i<tokens.length; i++) {
-			OrderDetail od = new OrderDetail();
-			od.setMenuItem(menu.getMenuItemByID(Integer.parseInt(tokens[i])));
-			od.setLineItem(i);
-			od.setQuantity(1);
-			orderDetails.add(od);
-		}
+		System.out.println("TIME THROUGH " + i);
+			
+				System.out.println(i + " TIME THROUGH ADD ORDER DETAIL LOOP");
+				OrderDetail od2 = new OrderDetail();
+				od2.setMenuItem(menu.getMenuItemByID(Integer.parseInt(tokens[i])));
+				od2.setLineItem(i);
+				od2.setQuantity(1);
+				
+				orderDetails.add(od2);
+				System.out.println(od2.getLineItem());
+				System.out.println("XXXXXXX" + od2.getMenuItem().getId() + "XXXXXXX");
+				od2.setFUCKINGORDER(order);
+			}
 		order.setOrderDetails(orderDetails);
 		
 //		order.setDateOrdered();
@@ -50,13 +89,12 @@ public class GrubRestaurantDAO implements GrubDAO {
 		}
 		return order;
 	}
+	
 	public Menu getUserSelectedMenu(String s) {
 		String[] tokens = s.split("&&");
 		Menu menu;
 		menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
-//		for (MenuSection ms : menu.getMenuSections(menu.getItems())) {
-//			System.out.println(ms.getSection() + "\t\t FROM DAO");
-//		}
+
 		return menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
 	}
 	
