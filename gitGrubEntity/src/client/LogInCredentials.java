@@ -1,11 +1,13 @@
 package client;
 
+import entities.Restaurant;
+
 public class LogInCredentials {
 
 	private String user_name;
 	private String password;
 	private int accessID;
-	
+	private Restaurant restaurant = null;
 	private Person person;
 	
 	public LogInCredentials() {}
@@ -14,6 +16,14 @@ public class LogInCredentials {
 		this.user_name = user_name;
 		this.password = password;
 		this.accessID = accessID;
+	}
+	
+	public void setRestaurant(Restaurant rest) {
+		this.restaurant = rest;
+	}
+	
+	public Restaurant getRestaurant() {
+		return this.restaurant;
 	}
 	
 	public Person getPersonLoggedIn() {

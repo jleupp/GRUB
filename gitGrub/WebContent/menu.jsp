@@ -39,7 +39,7 @@
 								</c:forEach>
 									
 							</c:forEach>
-	<div class="center" id="inputOrder"><input type="submit" value="Order Now" id="submitOrder"></div>
+	<div class="inputOrder center" id=""><input type="submit" value="Order Now" id="submitOrder"></div>
 							</form><br>
 						</div><br><br>
 					</div>
