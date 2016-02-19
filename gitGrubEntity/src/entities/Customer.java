@@ -44,7 +44,7 @@ public class Customer implements Person
 	@Column(name="birth_day")
 	private Date birthDay;
 	
-	@OneToMany(mappedBy="customer")//, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="customer", cascade = CascadeType.REMOVE)
 	private List<Order> orders;
 	
 	public void addPendingOrder(Order order) {
@@ -135,6 +135,13 @@ public class Customer implements Person
 	public void addOrder(Order order) {
 		System.out.println("IN CUSTOMER addOrder " + order.getDateOrdered());
 		this.orders.add(order);
+	}
+	
+	public void removeCustomersOrders() {
+		for (Order order : this.orders) {
+			System.out.println("REMOVING ORDER FROM CUSTOMER " + this.email);
+			order.removeOrderItems();
+		}
 	}
 	
 }

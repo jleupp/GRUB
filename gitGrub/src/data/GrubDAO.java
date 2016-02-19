@@ -16,5 +16,6 @@ public interface GrubDAO {
 	public void submitAndFinalizeOrder(LogInCredentials login, Order order);
 	public List<Order> getSubmittedOrders(LogInCredentials login); //, Order order);
 	public Order searchAllOrders(String s);
+	public void deactivateAndEraseCustomer(LogInCredentials login);
 	
 }
