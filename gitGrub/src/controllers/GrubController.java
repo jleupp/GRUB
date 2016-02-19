@@ -34,9 +34,11 @@ public class GrubController {
 		return order;
 	}
 	@RequestMapping(path="submitorder.do", method = RequestMethod.POST)
-	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login) {
+	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		System.out.println("IN SUBMIT ORDER");
+//		System.out.println(login.getPersonLoggedIn().getEmail());
 		ModelAndView mv = new ModelAndView("custhome.jsp");
-		grubDAO.submitAndFinalizeOrder(login);
+		grubDAO.submitAndFinalizeOrder(login,order);
 		return null;
 	}
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
@@ -47,7 +49,7 @@ public class GrubController {
 		order = grubDAO.buildOrder(login, order, info);
 		
 		mv.addObject("Order", order);
-		System.out.println(order.getStatus() + order.getCustomer());
+		System.out.println(order.getStatus() + order.getCustomer() + "OOOOOOOOOOOO" + order.getOrderDetails().size() + order.getOrderDetails().get(0).getOrder());
 		return mv;
 	}
 	

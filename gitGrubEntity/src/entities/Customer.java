@@ -3,6 +3,7 @@ package entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -43,10 +44,11 @@ public class Customer implements Person
 	@Column(name="birth_day")
 	private Date birthDay;
 	
-	@OneToMany(mappedBy="customer")
+	@OneToMany(mappedBy="customer")//, cascade = CascadeType.PERSIST)
 	private List<Order> orders;
 	
 	public void addPendingOrder(Order order) {
+		System.out.println("IN CUSTOMER addPending " + order.getDateOrdered());
 		this.pendingOrder = order;
 	}
 	
@@ -131,6 +133,7 @@ public class Customer implements Person
 		this.birthDay = birthDay;
 	}
 	public void addOrder(Order order) {
+		System.out.println("IN CUSTOMER addOrder " + order.getDateOrdered());
 		this.orders.add(order);
 	}
 	

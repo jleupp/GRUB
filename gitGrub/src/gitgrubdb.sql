@@ -204,7 +204,7 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `customer_order` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
   `customer_email` VARCHAR(30) NOT NULL,
-  `dateOrdered` DATE NULL,
+  `dateOrdered` TIMESTAMP NULL,
   `status` VARCHAR(45) NULL,
   PRIMARY KEY (`order_id`),
   CONSTRAINT `fkey_customer_email`
@@ -229,7 +229,7 @@ DROP TABLE IF EXISTS `order_detail` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `order_detail` (
-  `orderDeet_id` INT NOT NULL,
+  `orderDeet_id` INT NOT NULL AUTO_INCREMENT,
   `menuItems_id` INT NOT NULL,
   `lineItem` INT NULL,
   `quantity` INT NOT NULL,
@@ -423,7 +423,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', 'CURDATE()', 'pending');
+INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', '2016-02-18 22:03:47', 'pending');
 
 COMMIT;
 
