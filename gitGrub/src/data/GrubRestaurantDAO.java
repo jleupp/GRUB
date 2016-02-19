@@ -26,57 +26,32 @@ public class GrubRestaurantDAO implements GrubDAO {
 	private EntityManager em;
 	
 	public void submitAndFinalizeOrder(LogInCredentials login, Order order) {
+		System.out.println("IN SUBMIT AND FINALIZE ORDER");
 		//Set Pending order Status to Submitted
-//		login.getPersonLoggedIn().getPendingOrder().setStatus("Submitted");
 		order.setStatus("submitted");
-//		System.out.println(login.getPersonLoggedIn().getPendingOrder().getStatus() + " " + login.getPersonLoggedIn().getPendingOrder().getCustomer().getEmail());
-		System.out.println("Before Find");
 		//Get a managed customer Bean
 		Customer p = em.find(Customer.class, login.getPersonLoggedIn().getEmail());
-		System.out.println("After Find");
-		System.out.println(em.contains(p));
 		
-		System.out.println();
+		System.out.println(em.contains(p) + " " + p.getClass() + " is a managed object");
 		
 		//Add the restaurant ordered from to customers previous restaurant list and add order
-		//to previous orders list
-//		System.out.println(p.getEmail() + " " + p.getClass());// + " " + p.getPendingOrder().getStatus());
-		
+		//to previous orders list		
 		p.addNewRestaurant(login.getPersonLoggedIn().getPendingOrder());
 		p.addOrder(order);
-		System.out.println("AFTER p.addORDER");
-//		System.out.println(p.getPendingOrder().getStatus() + " " + p.getPendingOrder().getCustomer().getEmail());
 		//Get a managed Restaurant Bean
-		System.out.println("BEFORE FIND RESTAURANT");
 		Restaurant r = em.find(Restaurant.class, login.getPersonLoggedIn().getPendingOrder().getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant().getId());
-		System.out.println("After FIND RESTAURANT");
 		//Add customer to restaurants Customer List
 		r.addCustomer(p);
-		//Merge updated customer and restaurant Beans [UPDATE]
-//		try{
-//			em.persist(p);
-//		} catch(Exception e) {
-//			System.out.println(e.getMessage());
-//			System.out.println("ERRAH IN THE SUBMIT PERSIT");
-//		}
-		System.out.println("AFTER ADD CUSTOMER TO RESTAURANT");
-//		for (OrderDetail od : order.getOrderDetails()) {
-//			System.out.println("TIME THROUGH LOOP");
-//			OrderDetail od2 = new OrderDetail(); 
-//			od2 = em.find(OrderDetail.class, od.getOrderDeetId());
-//			em.persist(od2);
-//		}
+		//Merge updated customer and restaurant Beans [UPDATE] & Persist the Order and Order_Details submitted from user [CREATE]
 		try {
 			System.out.println("Prior to merge cascade of Customer - Order - OrderItem");
 			em.merge(p);
-//			em.persist(p);
-			System.out.println("AFTER MERGE CUST BEFORE RESTAURANT MERGE");
 			em.merge(r);
 		} catch(Exception e) {
 			System.out.println("ERRAH IN THE SUBMIT MERGE");
 			System.out.println(e.getMessage());
 		}
-		System.out.println("SUCCESSFUL MERGE BITCHES");
+
 		// persit the created order to the db, this cascades all the included order items [CREATE]
 	}
 	
@@ -114,13 +89,12 @@ public class GrubRestaurantDAO implements GrubDAO {
 		}
 		return order;
 	}
+	
 	public Menu getUserSelectedMenu(String s) {
 		String[] tokens = s.split("&&");
 		Menu menu;
 		menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
-//		for (MenuSection ms : menu.getMenuSections(menu.getItems())) {
-//			System.out.println(ms.getSection() + "\t\t FROM DAO");
-//		}
+
 		return menu = em.find(Restaurant.class, Integer.parseInt(tokens[0])).getMenu(tokens[1]);
 	}
 	
