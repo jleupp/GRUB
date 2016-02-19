@@ -39,7 +39,8 @@ public class GrubController {
 //		System.out.println(login.getPersonLoggedIn().getEmail());
 		ModelAndView mv = new ModelAndView("custhome.jsp");
 		grubDAO.submitAndFinalizeOrder(login,order);
-		return null;
+		System.out.println("Back from Finalizing Order");
+		return mv;
 	}
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
 	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
@@ -60,12 +61,6 @@ public class GrubController {
 		mv.setViewName("menu.jsp");
 		System.out.println(Timestamp.from(Instant.now()));
 		return mv;
-//		Menu menu = grubDAO.getUserSelectedMenu(s);
-//		for(MenuItem item : menu.getItems()) {
-//			System.out.println(item.getName() + " " + item.getDescription());
-//			System.out.println("$" + item.getPrice());
-//		}
-//		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
 	}
 
 	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)

@@ -15,7 +15,7 @@
 </li>
 
 <li> <a href="EditRestaurant.do">Edit Restaurants</a> </li>
-<li> <a href="RestaurantOrders.jsp">View Orders</a> </li>
+<li> <a href="RestaurantOrders.do">View Orders</a> </li>
 
 </ul>
 </body>
