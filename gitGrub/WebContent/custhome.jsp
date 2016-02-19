@@ -16,7 +16,7 @@
 <div style="border:0px solid green;" id="leftContent">
 <p><a href="logout.do"><button class="inputOrder">logout</button></a></p>
 <p><a href="browse.do"><button class="inputOrder">browse restaurants</button></a></p>
-<p><a href=""><button class="inputOrder">delete account</button></a></p>
+<p><a href="deactivate.do"><button class="inputOrder">delete account</button></a></p>
 <p><a href=""><button class="inputOrder">active orders</button></a></p></div>
 
 <div style="border:0px solid red;" id="rightContent">
