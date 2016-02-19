@@ -178,7 +178,10 @@ public class Restaurant
 	}
 
 	public void addCustomer(Customer customer) {
-		this.customers.add(customer);
+		if (!this.customers.contains(customer)) {
+			this.customers.add(customer);
+			System.out.println("ADDED CUSTOMER TO RESTAURANT");
+		}
 	}
 	
 	public List<Order> getSubmittedOrders() {
@@ -195,6 +198,17 @@ public class Restaurant
 			System.out.println("SORRY NO SUBBMITTED ORDERS in " + this.name);
 		}
 		return submittedOrders;
+	}
+	
+	public void removeCustomerOrders(Customer cust) {
+		this.customers.remove(cust);
+		System.out.println("REMOVED " + cust.getEmail());
+//		for (Customer c : this.customers) {
+//			if(c.getEmail().equals(cust.getEmail())) {
+//				this.customers.remove(c);
+//				System.out.println("CUSTOMER REMOVED SUCCESS:" + c.getEmail());
+//			}
+//		}
 	}
 	
 	
