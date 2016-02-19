@@ -24,6 +24,29 @@ import entities.Restaurant;
 public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
+	
+	public void deactivateAndEraseCustomer(LogInCredentials login) {
+		Customer cust = em.find(Customer.class, login.getPersonLoggedIn().getEmail());
+		System.out.println("REMOVING " + cust.getEmail());
+		List<Restaurant> rests = browseAllRestaurants();
+		for (Restaurant rest : rests) {
+			System.out.println(rest.getName());
+		}
+		for (Restaurant rest : rests) {
+			System.out.println("IN LOOP");
+			rest = em.merge(rest);
+			rest.removeCustomerOrders(cust);
+			System.out.println((em.contains(rest)));
+			System.out.println();
+		}
+		cust = em.merge(cust);
+
+		em.remove(cust);
+		
+		
+		System.out.println("REMOVED CUSTOMER?!");
+	}
+	
 
 	public List<Order> getSubmittedOrders(LogInCredentials login) {//, Order order) {
 		for(Restaurant rest : browseAllRestaurants()) {

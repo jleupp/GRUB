@@ -35,6 +35,30 @@ public class GrubController {
 		return order;
 	}
 	
+	@RequestMapping(path="activeorder.do")
+	public ModelAndView displayActiveOrders(@ModelAttribute("personCred")LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		ModelAndView mv = new ModelAndView("customerhome.jsp");
+		//THIS NEEDS TO BE WORKED ON
+		mv.addObject("Order", order);
+		return mv; //CHANGE THIS
+	}
+	
+	@RequestMapping(path="deactivate.do")
+	public ModelAndView deactivateUser(@ModelAttribute("personCred")LogInCredentials login) {
+		ModelAndView mv = new ModelAndView("index.jsp");
+		if(login.getPersonLoggedIn() !=null) {
+			grubDAO.deactivateAndEraseCustomer(login);
+			String log = "You have been D.E.L.E.T.E.D go f yourself";
+			mv.addObject("message", log);
+			return mv;
+		}
+		else {
+			String log = "You must be logged in to delete yourself...";
+			mv.addObject("message", log);
+			return mv;
+		}
+	}
+	
 	@RequestMapping(path="logout.do", method=RequestMethod.GET)
 	public ModelAndView logoutFromGitGrub(@ModelAttribute("personCred")LogInCredentials login) {
 		login.setAccessID(0);
