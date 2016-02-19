@@ -35,18 +35,12 @@ public class GrubRestaurantDAO implements GrubDAO {
 		for (Restaurant rest : rests) {
 			System.out.println("IN LOOP");
 			rest = em.merge(rest);
-//			Restaurant restaurant = em.find(Restaurant.class, rest.getId());
 			rest.removeCustomerOrders(cust);
 			System.out.println((em.contains(rest)));
-//			em.merge(restaurant);
 			System.out.println();
 		}
-		
-//		for(Order order : cust.getOrders()) {
-//			order = em.merge(order);
-//		}
 		cust = em.merge(cust);
-//		cust.removeCustomersOrders();
+
 		em.remove(cust);
 		
 		

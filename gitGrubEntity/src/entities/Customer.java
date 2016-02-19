@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,16 @@ public class Customer implements Person
 	
 	@OneToMany(mappedBy="customer", cascade = CascadeType.REMOVE)
 	private List<Order> orders;
+	
+	public List<Order> getActiveOrders() {
+		List<Order> actOrd = new ArrayList<>();
+		for (Order order : this.orders) {
+			if(order.getStatus().equals("submitted")) {
+				actOrd.add(order);
+			}
+		}
+		return actOrd;
+	}
 	
 	public void addPendingOrder(Order order) {
 		System.out.println("IN CUSTOMER addPending " + order.getDateOrdered());

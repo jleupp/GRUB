@@ -35,6 +35,14 @@ public class GrubController {
 		return order;
 	}
 	
+	@RequestMapping(path="activeorder.do")
+	public ModelAndView displayActiveOrders(@ModelAttribute("personCred")LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		ModelAndView mv = new ModelAndView("customerhome.jsp");
+		//THIS NEEDS TO BE WORKED ON
+		mv.addObject("Order", order);
+		return mv; //CHANGE THIS
+	}
+	
 	@RequestMapping(path="deactivate.do")
 	public ModelAndView deactivateUser(@ModelAttribute("personCred")LogInCredentials login) {
 		ModelAndView mv = new ModelAndView("index.jsp");
