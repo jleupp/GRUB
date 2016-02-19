@@ -16,9 +16,7 @@
 </head>
 <body>
 
-	<a href="browse.jsp">Browse other menus</a>
-
-		<p>${Order.status}</p>
+	<a href="browse.do">Browse other menus</a>
 	<table>
 				<h2>Your Order is ${Order.status}</h2>
 		<c:forEach var="details" items="${Order.orderDetails}">
