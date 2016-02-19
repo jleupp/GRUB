@@ -31,7 +31,7 @@ public class OrderDetail
 	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
 	private Order order;
 
-	public void setFUCKINGORDER(Order order) {
+	public void setOrder(Order order) {
 		this.order = order;
 		
 	}
@@ -84,8 +84,4 @@ public class OrderDetail
 		return order;
 	}
 
-	public void setOrder(Order order)
-	{
-		this.order = order;
-	}
 }

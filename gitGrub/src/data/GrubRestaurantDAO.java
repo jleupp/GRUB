@@ -78,7 +78,7 @@ public class GrubRestaurantDAO implements GrubDAO {
 				orderDetails.add(od2);
 				System.out.println(od2.getLineItem());
 				System.out.println("XXXXXXX" + od2.getMenuItem().getId() + "XXXXXXX");
-				od2.setFUCKINGORDER(order);
+				od2.setOrder(order);
 			}
 		order.setOrderDetails(orderDetails);
 		
