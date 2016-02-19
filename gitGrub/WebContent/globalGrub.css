@@ -51,13 +51,31 @@ body{
 #returnLink a:hover{
 	text-decoration:underline;'
 }
-#inputOrder{
-	
+.inputOrder{
+	border-radius:25%;
 	margin-top:2%;
 }
 #submitOrder{
 	border-radius:25%;
 }
+#innerBody{
+	
+}
+#leftContent{
+	position: absolute;
+    left: 0px;
+    width: 49%;
+    margin-left:.5%;
+}
+#rightContent{
+	position: absolute;
+    right: 0px;
+    width: 49%;
+    margin-right:.5%;
+    
+   
+}
+
 
 
 
