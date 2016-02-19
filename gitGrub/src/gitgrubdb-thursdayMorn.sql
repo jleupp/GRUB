@@ -229,7 +229,7 @@ DROP TABLE IF EXISTS `order_detail` ;
 
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `order_detail` (
-  `orderDeet_id` INT NOT NULL AUTO_INCREMENT,
+  `orderDeet_id` INT NOT NULL,
   `menuItems_id` INT NOT NULL,
   `lineItem` INT NULL,
   `quantity` INT NOT NULL,
@@ -423,7 +423,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `gitgrubdb`;
-INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', '2016-02-18 22:03:47', 'pending');
+INSERT INTO `customer_order` (`order_id`, `customer_email`, `dateOrdered`, `status`) VALUES (1, 'maya.mohan@ahtllc.com', NOW(), 'pending');
 
 COMMIT;
 

@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,7 +22,7 @@ public class Order
 	@Column(name = "order_id")
 	private int orderId;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST)
 	private List<OrderDetail> orderDetails;
 
 	@ManyToOne
@@ -30,21 +30,19 @@ public class Order
 	private Customer customer;
 	
 
-	private Date dateOrdered;
+	private Timestamp dateOrdered;
 
 	private String status;
 
-
-
-
-	
-
-	public Date getDateOrdered()
+	public Timestamp getDateOrdered()
 	{
 		return dateOrdered;
 	}
-
-	public void setDateOrdered(Date dateOrdered)
+	
+	public void setOrderId(int id) {
+		this.orderId = id;
+	}
+	public void setDateOrdered(Timestamp dateOrdered)
 	{
 		this.dateOrdered = dateOrdered;
 	}

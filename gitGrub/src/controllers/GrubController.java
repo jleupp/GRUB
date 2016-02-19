@@ -1,5 +1,8 @@
 package controllers;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,8 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import client.LogInCredentials;
 import data.GrubDAO;
-import entities.Menu;
-import entities.MenuItem;
+import entities.Order;
 
 @Controller
 @SessionAttributes({"personCred", "orderList"})
@@ -27,24 +29,43 @@ public class GrubController {
 	}
 
 	@ModelAttribute("orderList")
-	public String initOrderList() {
-		//HERE WE WILL INIT AN ORDER ENTITY
-		//THE ORDER ENTITY HAS A LIST OF ORDER DETAIL OBJECTS
-		String s = "Order Entity Instantiation";
-		return s;
+	public Order initOrderList() {
+		Order order = new Order();
+		return order;
+	}
+	@RequestMapping(path="submitorder.do", method = RequestMethod.POST)
+	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		System.out.println("IN SUBMIT ORDER");
+//		System.out.println(login.getPersonLoggedIn().getEmail());
+		ModelAndView mv = new ModelAndView("custhome.jsp");
+		grubDAO.submitAndFinalizeOrder(login,order);
+		return null;
+	}
+	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
+	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
+		System.out.println(info);
+		System.out.println("STRING SENT FROM MENU.JSP");
+		ModelAndView mv = new ModelAndView("order.jsp");
+		order = grubDAO.buildOrder(login, order, info);
+		
+		mv.addObject("Order", order);
+		System.out.println(order.getStatus() + order.getCustomer() + "OOOOOOOOOOOO" + order.getOrderDetails().size() + order.getOrderDetails().get(0).getOrder());
+		return mv;
 	}
 	
 	@RequestMapping(path="menu.do", method = RequestMethod.POST)
 	public ModelAndView displayRestaurantsMenu(@RequestParam("menuchoice") String s) {
 		ModelAndView mv = new ModelAndView("menu.jsp");
-		Menu menu =grubDAO.getUserSelectedMenu(s);
-		for(MenuItem item : menu.getItems()) {
-			System.out.println(item.getName() + " " + item.getDescription());
-			System.out.println("$" + item.getPrice());
-		}
 		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
-		
-		return null;
+		mv.setViewName("menu.jsp");
+		System.out.println(Timestamp.from(Instant.now()));
+		return mv;
+//		Menu menu = grubDAO.getUserSelectedMenu(s);
+//		for(MenuItem item : menu.getItems()) {
+//			System.out.println(item.getName() + " " + item.getDescription());
+//			System.out.println("$" + item.getPrice());
+//		}
+//		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
 	}
 
 	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)

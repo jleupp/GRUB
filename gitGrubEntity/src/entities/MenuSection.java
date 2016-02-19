@@ -11,10 +11,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="menu_section")
-public class MenuSection {
+public class MenuSection implements Comparable<MenuSection> {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	private String section;
 	
@@ -41,5 +41,7 @@ public class MenuSection {
 		this.items.add(item);
 	}
 	
-
+	public int compareTo(MenuSection section) {
+		return this.id.compareTo(section.getId());
+	}
 }
