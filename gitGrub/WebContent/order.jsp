@@ -32,14 +32,14 @@
 			<TR>
 				<TD><form action="quantity.do" method="POST">
 						<input type="number" name="quantity" value="${details.quantity}">
-						<input type="submit" value="Submit" />
 					</form></TD>
 				<TD>${details.menuItem.name}</TD>
 				<TD>${details.menuItem.price}</TD>
 			</TR>
 		</c:forEach>
 	</table>
-
+		<form action= "submitorder.do" method= "POST">
+		<input type="submit" value="Submit" /> </form>
 	<h2>Thank you for ordering from ${Order.orderDetails.get(0).menuItem.menu.restaurant.name}!</h2>
 
 	<%--<form action="quantity.do" method="POST">
