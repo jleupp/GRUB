@@ -21,7 +21,7 @@
 					<div id="sectionheader"><h1 class="sectionheader">All Restaurants</h1></div>
 					<div id="storeList">
 						<div class="subHeader"><h2>${fn:length(restList)} Restaurants in dataBase!</h2>
-							<h2><a href="index.html">Return to Login</a></h2>
+							<h2><a href="index.jsp">Return to Login</a></h2>
 						</div>
 
 						<!-- <div style="overflow-x:auto;">

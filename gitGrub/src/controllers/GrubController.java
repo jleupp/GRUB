@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,13 +34,107 @@ public class GrubController {
 		Order order = new Order();
 		return order;
 	}
+	
+	@RequestMapping(path="activeorder.do")
+	public ModelAndView displayActiveOrders(@ModelAttribute("personCred")LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		ModelAndView mv = new ModelAndView("customerhome.jsp");
+		//THIS NEEDS TO BE WORKED ON
+		mv.addObject("Order", order);
+		return mv; //CHANGE THIS
+	}
+	
+	@RequestMapping(path="deactivate.do")
+	public ModelAndView deactivateUser(@ModelAttribute("personCred")LogInCredentials login) {
+		ModelAndView mv = new ModelAndView("index.jsp");
+		if(login.getPersonLoggedIn() !=null) {
+			grubDAO.deactivateAndEraseCustomer(login);
+			String log = "You have been D.E.L.E.T.E.D go f yourself";
+			mv.addObject("message", log);
+			return mv;
+		}
+		else {
+			String log = "You must be logged in to delete yourself...";
+			mv.addObject("message", log);
+			return mv;
+		}
+	}
+	
+	@RequestMapping(path="logout.do", method=RequestMethod.GET)
+	public ModelAndView logoutFromGitGrub(@ModelAttribute("personCred")LogInCredentials login) {
+		login.setAccessID(0);
+		login.setPassword("ERRAH");
+		login.setUser_name("NotAUser");
+		login.setPersonLoggedIn(null);
+		String log = "You have been successfully logged out";
+		ModelAndView mv = new ModelAndView("index.jsp");
+		mv.addObject("message", log);
+		return mv;
+	}
+	@RequestMapping(path="managerhome.do", method=RequestMethod.GET)
+	public ModelAndView managerDashboard(@ModelAttribute("personCred")LogInCredentials login) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {
+			ModelAndView mv = new ModelAndView("managerhome.jsp");
+			return mv;
+		}
+		else {
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
+	@RequestMapping(path="deliver.do", method=RequestMethod.POST)
+	public ModelAndView deliverOrder(@ModelAttribute("personCred") LogInCredentials login, @RequestParam("orderid") String s) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {	
+			ModelAndView mv = new ModelAndView("restaurantorders.jsp");
+			System.out.println(s);
+			grubDAO.submitAndFinalizeOrder(login, grubDAO.searchAllOrders(s));
+			List<Order> orders = grubDAO.getSubmittedOrders(login);
+			if (orders.size()>0) {
+				mv.addObject("submittedOrders", orders);
+			} else {
+				String Empty = login.getRestaurant().getName() + " Has no Submitted Orders";
+				System.out.println("WE HAVE A NO ORDER RETURNED");
+				mv = new ModelAndView("managerhome.jsp");
+				mv.addObject("EmptyString", Empty);
+			}
+			return mv;
+		} else {
+			System.out.println(login.getAccessID());
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
+	@RequestMapping(path="restaurantorders.do") //, path = RequestMethod.Post)
+	public ModelAndView viewSubmittedOrders(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {
+			ModelAndView mv = new ModelAndView("restaurantorders.jsp");
+			List<Order> orders = grubDAO.getSubmittedOrders(login);//, order);
+			if (orders.size()>0) {
+				mv.addObject("submittedOrders", orders);
+			} else {
+				String Empty = login.getRestaurant().getName() + " Has no Submitted Orders";
+				System.out.println("WE HAVE A NO ORDER RETURNED");
+				mv = new ModelAndView("managerhome.jsp");
+				mv.addObject("EmptyString", Empty);
+			}
+			return mv;
+		}
+		else {
+			System.out.println(login.getAccessID());
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
 	@RequestMapping(path="submitorder.do", method = RequestMethod.POST)
 	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
 		System.out.println("IN SUBMIT ORDER");
 //		System.out.println(login.getPersonLoggedIn().getEmail());
 		ModelAndView mv = new ModelAndView("custhome.jsp");
 		grubDAO.submitAndFinalizeOrder(login,order);
-		return null;
+		System.out.println("Back from Finalizing Order");
+		return mv;
 	}
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
 	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
@@ -60,12 +155,6 @@ public class GrubController {
 		mv.setViewName("menu.jsp");
 		System.out.println(Timestamp.from(Instant.now()));
 		return mv;
-//		Menu menu = grubDAO.getUserSelectedMenu(s);
-//		for(MenuItem item : menu.getItems()) {
-//			System.out.println(item.getName() + " " + item.getDescription());
-//			System.out.println("$" + item.getPrice());
-//		}
-//		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
 	}
 
 	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)
@@ -93,12 +182,12 @@ public class GrubController {
 			}
 			case 10: {
 					mv.addObject("ERROR", login);
-					mv.setViewName("index.html");
+					mv.setViewName("index.jsp");
 				break;
 			}
 			default: {
 				System.out.println("HUGE FRIGGIN MISTAKE IN LOGIN SWITCH");
-				mv.setViewName("index.html");
+				mv.setViewName("index.jsp");
 			}
 		
 		}

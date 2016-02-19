@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +45,18 @@ public class Customer implements Person
 	@Column(name="birth_day")
 	private Date birthDay;
 	
-	@OneToMany(mappedBy="customer")//, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="customer", cascade = CascadeType.REMOVE)
 	private List<Order> orders;
+	
+	public List<Order> getActiveOrders() {
+		List<Order> actOrd = new ArrayList<>();
+		for (Order order : this.orders) {
+			if(order.getStatus().equals("submitted")) {
+				actOrd.add(order);
+			}
+		}
+		return actOrd;
+	}
 	
 	public void addPendingOrder(Order order) {
 		System.out.println("IN CUSTOMER addPending " + order.getDateOrdered());
@@ -135,6 +146,13 @@ public class Customer implements Person
 	public void addOrder(Order order) {
 		System.out.println("IN CUSTOMER addOrder " + order.getDateOrdered());
 		this.orders.add(order);
+	}
+	
+	public void removeCustomersOrders() {
+		for (Order order : this.orders) {
+			System.out.println("REMOVING ORDER FROM CUSTOMER " + this.email);
+			order.removeOrderItems();
+		}
 	}
 	
 }

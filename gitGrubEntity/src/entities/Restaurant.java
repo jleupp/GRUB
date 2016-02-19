@@ -178,14 +178,17 @@ public class Restaurant
 	}
 
 	public void addCustomer(Customer customer) {
-		this.customers.add(customer);
+		if (!this.customers.contains(customer)) {
+			this.customers.add(customer);
+			System.out.println("ADDED CUSTOMER TO RESTAURANT");
+		}
 	}
 	
 	public List<Order> getSubmittedOrders() {
 		List<Order> submittedOrders = new ArrayList<>();
 		for (Customer cust : this.customers) {
 			for (Order order : cust.getOrders()) {
-				if(order.getStatus().equals("submitted")) {
+				if(order.getStatus().equals("submitted") && !submittedOrders.contains(order) && order.getOrderDetails().get(0).getMenuItem().getRestId() == this.id) {
 					submittedOrders.add(order);
 					System.out.println("ORDER SUBMITTED SUCCESS");
 				} else continue;
@@ -195,6 +198,17 @@ public class Restaurant
 			System.out.println("SORRY NO SUBBMITTED ORDERS in " + this.name);
 		}
 		return submittedOrders;
+	}
+	
+	public void removeCustomerOrders(Customer cust) {
+		this.customers.remove(cust);
+		System.out.println("REMOVED " + cust.getEmail());
+//		for (Customer c : this.customers) {
+//			if(c.getEmail().equals(cust.getEmail())) {
+//				this.customers.remove(c);
+//				System.out.println("CUSTOMER REMOVED SUCCESS:" + c.getEmail());
+//			}
+//		}
 	}
 	
 	

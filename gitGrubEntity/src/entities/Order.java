@@ -3,6 +3,7 @@ package entities;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Order
 	@Column(name = "order_id")
 	private int orderId;
 
-	@OneToMany(mappedBy = "order")//, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
 	private List<OrderDetail> orderDetails;
 
 	@ManyToOne
@@ -87,5 +88,9 @@ public class Order
 	public void setCustomer(Customer customer)
 	{
 		this.customer = customer;
+	}
+	public void removeOrderItems() {
+		System.out.println("REMOVE ORDER ITEMS .... IN ORDER");
+		this.orderDetails.clear();
 	}
 }
