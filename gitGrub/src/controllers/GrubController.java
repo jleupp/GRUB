@@ -33,7 +33,12 @@ public class GrubController {
 		Order order = new Order();
 		return order;
 	}
-	
+	@RequestMapping(path="submitorder.do", method = RequestMethod.POST)
+	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login) {
+		ModelAndView mv = new ModelAndView("custhome.jsp");
+		grubDAO.submitAndFinalizeOrder(login);
+		return null;
+	}
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
 	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
 		System.out.println(info);

@@ -1,6 +1,7 @@
 package entities;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -178,6 +179,22 @@ public class Restaurant
 
 	public void addCustomer(Customer customer) {
 		this.customers.add(customer);
+	}
+	
+	public List<Order> getSubmittedOrders() {
+		List<Order> submittedOrders = new ArrayList<>();
+		for (Customer cust : this.customers) {
+			for (Order order : cust.getOrders()) {
+				if(order.getStatus().equals("submitted")) {
+					submittedOrders.add(order);
+					System.out.println("ORDER SUBMITTED SUCCESS");
+				} else continue;
+			}				
+		}
+		if(!(submittedOrders.size()>0)) {
+			System.out.println("SORRY NO SUBBMITTED ORDERS in " + this.name);
+		}
+		return submittedOrders;
 	}
 	
 	

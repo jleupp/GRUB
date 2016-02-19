@@ -25,7 +25,35 @@ public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
 	
-	
+	public void submitAndFinalizeOrder(LogInCredentials login) {
+		//Set Pending order Status to Submitted
+		login.getPersonLoggedIn().getPendingOrder().setStatus("Submitted");
+		//Get a managed customer Bean
+		Customer p = em.find(Customer.class, login.getPersonLoggedIn());
+		//Add the restaurant ordered from to customers previous restaurant list and add order
+		//to previous orders list
+		p.addNewRestaurant(login.getPersonLoggedIn().getPendingOrder());
+		p.addOrder(p.getPendingOrder());
+		//Get a managed Restaurant Bean
+		Restaurant r = em.find(Restaurant.class, p.getPendingOrder().getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant());
+		//Add customer to restaurants Customer List
+		r.addCustomer(p);
+		//Merge updated customer and restaurant Beans [UPDATE]
+		try {
+			em.merge(p);
+			em.merge(r);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("ERRAH IN THE SUBMIT MERGE");
+		}
+		// persit the created order to the db, this cascades all the included order items [CREATE]
+		try{
+			em.persist(login.getPersonLoggedIn().getPendingOrder());
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("ERRAH IN THE SUBMIT PERSIT");
+		}
+	}
 	
 	public Order buildOrder(LogInCredentials login, Order order, String s) {
 		String[] tokens = s.split(",");

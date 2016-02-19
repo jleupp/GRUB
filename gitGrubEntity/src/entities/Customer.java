@@ -38,7 +38,6 @@ public class Customer implements Person
 	
 	@ManyToOne
 	@JoinColumn(name="access_id", referencedColumnName="id")
-
 	private Access access;
 	
 	@Column(name="birth_day")
@@ -51,28 +50,40 @@ public class Customer implements Person
 		this.pendingOrder = order;
 	}
 	
+	public Order getPendingOrder() {
+		return this.pendingOrder;
+	}
+	
 	public void addNewRestaurant(Order order) {
 		Restaurant rest = order.getOrderDetails().get(0).getMenuItem().getMenu().getRestaurant();
-		restaurants.add(rest);
-		rest.addCustomer(this);
-		
+		if (!restaurants.contains(rest)) {
+			this.restaurants.add(rest);
+			System.out.println("CUSTOMERS RESTAURANT LIST DIDN'T HAVE " + rest.getName() + "SO ADDED TO LIST");
+		} else {
+			System.out.println("CUSTOMERS RESTAURANT LIST ALREADY CONTAINED " + rest.getName() + "SO DID NOT ADD TO LIST");
+		}
 	}
+	
 	public String getEmail()
 	{
-		return email;
+		return this.email;
 	}
+	
 	public void setEmail(String email)
 	{
 		this.email = email;
 	}
+	
 	public String getPassword()
 	{
 		return password;
 	}
+	
 	public void setPassword(String password)
 	{
 		this.password = password;
 	}
+	
 	public String getPhone()
 	{
 		return phone;
