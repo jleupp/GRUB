@@ -5,7 +5,11 @@ div,span{
 /*====================DEFAULTS=================================================*/
 body{
 	/*background-image:url("http://www.eatitatlanta.com/wp-content/uploads/2010/12/mosaic94d2adbc3e7fdfc80c32a1a8f0466281df9513e9.jpg");*/
-
+	position: relative;
+}
+.innerBody{
+	width:100%;
+	border:3px solid black;
 }
 /*==================classes======================================================*/
 .lightgrey{
@@ -14,7 +18,19 @@ body{
 .center{
 	text-align:center;
 }
+.showItem{
+	margin-top:2%;
 
+}
+.showDescription{
+	color:green;
+}
+.clear{
+	clear:both;
+}
+.red{
+	color:red;
+}
 
 
 /*==================ID's=========================================================*/
@@ -35,3 +51,36 @@ body{
 #returnLink a:hover{
 	text-decoration:underline;'
 }
+#inputOrder{
+	
+	margin-top:2%;
+}
+#submitOrder{
+	border-radius:25%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
