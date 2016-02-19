@@ -14,5 +14,7 @@ public interface GrubDAO {
 	public Menu	getUserSelectedMenu(String s);
 	public Order buildOrder(LogInCredentials login, Order order, String s);
 	public void submitAndFinalizeOrder(LogInCredentials login, Order order);
+	public List<Order> getSubmittedOrders(LogInCredentials login); //, Order order);
+	public Order searchAllOrders(String s);
 	
 }

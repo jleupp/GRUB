@@ -24,8 +24,48 @@ import entities.Restaurant;
 public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
+
+	public List<Order> getSubmittedOrders(LogInCredentials login) {//, Order order) {
+		for(Restaurant rest : browseAllRestaurants()) {
+			if(rest.getManager().getEmail().equals(login.getPersonLoggedIn().getEmail())) {
+				login.setRestaurant(rest);
+			} else {
+				System.out.println("NO SUCCESS IN MATCHING MANAGER");
+				}
+			}
+		System.out.println("BEFORE RETURNNING SUBMITTTED ORDERS");
+		List<Order> returnOrders = login.getRestaurant().getSubmittedOrders();
+		System.out.println(returnOrders.size() + " NUMBER OF ORDERS");
+		return returnOrders;
+	}
 	
+	public Order searchAllOrders(String s) {
+		CriteriaQuery<Order> cq = em.getCriteriaBuilder().createQuery(Order.class);
+	       cq.select(cq.from(Order.class));
+	       int i= 0;
+	       List<Order> orders = em.createQuery(cq).getResultList();
+	       for ( Order order : orders) {
+	    	   if(order.getOrderId() == Integer.parseInt(s)) {
+	    		System.out.println(s);
+	    		System.out.println(order.getCustomer().getEmail());
+	    		   return order;
+	    	   }
+	    		System.out.println(i++ + "times through the loop");  
+	       }
+	       System.out.println("couldnt find order in the gdao");
+		return null; // CHANGE THIS LATER
+		
+	}
 	public void submitAndFinalizeOrder(LogInCredentials login, Order order) {
+		
+		if (order.getStatus().equals("submitted")) {
+			order = em.find(Order.class, order.getOrderId());
+			System.out.println(order.getCustomer().getEmail());
+			order.setStatus("Delivered");
+			em.merge(order);
+			return;
+		}
+		
 		System.out.println("IN SUBMIT AND FINALIZE ORDER");
 		//Set Pending order Status to Submitted
 		order.setStatus("submitted");

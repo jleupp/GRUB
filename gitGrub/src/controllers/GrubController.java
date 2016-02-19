@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,75 @@ public class GrubController {
 		Order order = new Order();
 		return order;
 	}
+	
+	@RequestMapping(path="logout.do", method=RequestMethod.GET)
+	public ModelAndView logoutFromGitGrub(@ModelAttribute("personCred")LogInCredentials login) {
+		login.setAccessID(0);
+		login.setPassword("ERRAH");
+		login.setUser_name("NotAUser");
+		login.setPersonLoggedIn(null);
+		String log = "You have been successfully logged out";
+		ModelAndView mv = new ModelAndView("index.jsp");
+		mv.addObject("message", log);
+		return mv;
+	}
+	@RequestMapping(path="managerhome.do", method=RequestMethod.GET)
+	public ModelAndView managerDashboard(@ModelAttribute("personCred")LogInCredentials login) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {
+			ModelAndView mv = new ModelAndView("managerhome.jsp");
+			return mv;
+		}
+		else {
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
+	@RequestMapping(path="deliver.do", method=RequestMethod.POST)
+	public ModelAndView deliverOrder(@ModelAttribute("personCred") LogInCredentials login, @RequestParam("orderid") String s) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {	
+			ModelAndView mv = new ModelAndView("restaurantorders.jsp");
+			System.out.println(s);
+			grubDAO.submitAndFinalizeOrder(login, grubDAO.searchAllOrders(s));
+			List<Order> orders = grubDAO.getSubmittedOrders(login);
+			if (orders.size()>0) {
+				mv.addObject("submittedOrders", orders);
+			} else {
+				String Empty = login.getRestaurant().getName() + " Has no Submitted Orders";
+				System.out.println("WE HAVE A NO ORDER RETURNED");
+				mv = new ModelAndView("managerhome.jsp");
+				mv.addObject("EmptyString", Empty);
+			}
+			return mv;
+		} else {
+			System.out.println(login.getAccessID());
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
+	@RequestMapping(path="restaurantorders.do") //, path = RequestMethod.Post)
+	public ModelAndView viewSubmittedOrders(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
+		if(login.getAccessID()<2 && login.getAccessID()>0) {
+			ModelAndView mv = new ModelAndView("restaurantorders.jsp");
+			List<Order> orders = grubDAO.getSubmittedOrders(login);//, order);
+			if (orders.size()>0) {
+				mv.addObject("submittedOrders", orders);
+			} else {
+				String Empty = login.getRestaurant().getName() + " Has no Submitted Orders";
+				System.out.println("WE HAVE A NO ORDER RETURNED");
+				mv = new ModelAndView("managerhome.jsp");
+				mv.addObject("EmptyString", Empty);
+			}
+			return mv;
+		}
+		else {
+			System.out.println(login.getAccessID());
+			ModelAndView mv = new ModelAndView("index.jsp");
+			return mv;
+		}
+	}
+	
 	@RequestMapping(path="submitorder.do", method = RequestMethod.POST)
 	public ModelAndView submitOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order) {
 		System.out.println("IN SUBMIT ORDER");
@@ -88,12 +158,12 @@ public class GrubController {
 			}
 			case 10: {
 					mv.addObject("ERROR", login);
-					mv.setViewName("index.html");
+					mv.setViewName("index.jsp");
 				break;
 			}
 			default: {
 				System.out.println("HUGE FRIGGIN MISTAKE IN LOGIN SWITCH");
-				mv.setViewName("index.html");
+				mv.setViewName("index.jsp");
 			}
 		
 		}
