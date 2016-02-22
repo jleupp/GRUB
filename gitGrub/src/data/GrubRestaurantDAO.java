@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import client.LogInCredentials;
 import client.Person;
+import entities.Access;
 import entities.Customer;
 import entities.Manager;
 import entities.Menu;
@@ -25,26 +27,55 @@ public class GrubRestaurantDAO implements GrubDAO {
 	@PersistenceContext
 	private EntityManager em;
 	
-	public void deactivateAndEraseCustomer(LogInCredentials login) {
-		Customer cust = em.find(Customer.class, login.getPersonLoggedIn().getEmail());
-		System.out.println("REMOVING " + cust.getEmail());
-		List<Restaurant> rests = browseAllRestaurants();
-		for (Restaurant rest : rests) {
-			System.out.println(rest.getName());
-		}
-		for (Restaurant rest : rests) {
-			System.out.println("IN LOOP");
-			rest = em.merge(rest);
-			rest.removeCustomerOrders(cust);
-			System.out.println((em.contains(rest)));
-			System.out.println();
-		}
-		cust = em.merge(cust);
-
-		em.remove(cust);
+	public LogInCredentials createUser(LogInCredentials login, String phone, String birth) {
+		Customer cust = new Customer();
+		Access access = new Access();
+		access.setId(2);
+		access.setAccessLevel(2);
+		cust.setAccess(access);
+		cust.setEmail(login.getUser_name());
+		cust.setPassword(login.getPassword());
+		String[] tokens = birth.split("-");
+		int year = Integer.parseInt(tokens[0]);
+		int month = Integer.parseInt(tokens[1]);
+		int date = Integer.parseInt(tokens[2]);
+		Date bd = new Date(year, month, date);
+		cust.setBirthDay(bd);
+		cust.setPhone(phone);
 		
+		try {
+			em.merge(cust);
+		} catch(Exception e) {
+			System.out.println("Errah in creating Customer");
+			System.out.println(e.getMessage());
+		}
 		
-		System.out.println("REMOVED CUSTOMER?!");
+		login.setPersonLoggedIn(cust);
+		return login;
+		
+	}
+	
+	public String deactivateAndEraseCustomer(LogInCredentials login) {
+		if (login.getPersonLoggedIn().getEmail().equals("elenapignatelli@gmail.com") || login.getPersonLoggedIn().getEmail().equals("elijah.molnar@gmail.com") || login.getPersonLoggedIn().getEmail().equals("jeffrey.leupp@gmail.com") || login.getPersonLoggedIn().getEmail().equals("maya.mohan@ahtllc.com")) {
+			return "Sorry, but my creators cannot be deleted";
+		} else {
+			Customer cust = em.find(Customer.class, login.getPersonLoggedIn().getEmail());
+			System.out.println("REMOVING " + cust.getEmail());
+			List<Restaurant> rests = browseAllRestaurants();
+			for (Restaurant rest : rests) {
+				System.out.println(rest.getName());
+			}
+			for (Restaurant rest : rests) {
+				System.out.println("IN LOOP");
+				rest = em.merge(rest);
+				rest.removeCustomerOrders(cust);
+				System.out.println((em.contains(rest)));
+				System.out.println();
+			}
+			cust = em.merge(cust);
+			em.remove(cust);
+			return cust.getEmail() + " has been removed.";
+		}
 	}
 	
 

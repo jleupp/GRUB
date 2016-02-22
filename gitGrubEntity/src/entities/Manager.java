@@ -65,5 +65,11 @@ public class Manager implements Person
 		return "Manager [email=" + email + ", password=" + password + ", phone=" + phone + ", accessLevel=" + access.getAccessLevel()
 				+ "]";
 	}
+	@Override
+	public Order getPendingOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 }
