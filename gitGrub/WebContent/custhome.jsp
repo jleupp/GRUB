@@ -12,7 +12,7 @@
 <title>Customer Home Page</title>
 </head>
 <body><div><IMG id="logo" src="http://uxrepo.com/static/icon-sets/mfg-labs/svg/github-circled-alt.svg"><span class="lightgrey">Grub</span></div>
-<div class="center"><h3>This is the Customer Dashboard Bitches</h3>
+<div class="center"><h3>This is the Customer Dashboard <3</h3>
 <div style="border:0px solid green;" id="leftContent">
 <p><a href="logout.do"><button class="inputOrder">logout</button></a></p>
 <p><a href="browse.do"><button class="inputOrder">browse restaurants</button></a></p>
