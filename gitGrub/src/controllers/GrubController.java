@@ -37,7 +37,7 @@ public class GrubController {
 	
 	@RequestMapping(path="activeorder.do")
 	public ModelAndView displayActiveOrders(@ModelAttribute("personCred")LogInCredentials login, @ModelAttribute("orderList") Order order) {
-		ModelAndView mv = new ModelAndView("customerhome.jsp");
+		ModelAndView mv = new ModelAndView("order.jsp");
 		//THIS NEEDS TO BE WORKED ON
 		mv.addObject("Order", order);
 		return mv; //CHANGE THIS
