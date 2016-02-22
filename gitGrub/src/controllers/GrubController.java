@@ -26,6 +26,7 @@ public class GrubController {
 	@ModelAttribute("personCred")
 	public LogInCredentials setPersonCred() {
 		LogInCredentials login = new LogInCredentials();
+		login.setPersonLoggedIn(null);
 		return login;
 	}
 
@@ -47,8 +48,7 @@ public class GrubController {
 	public ModelAndView deactivateUser(@ModelAttribute("personCred")LogInCredentials login) {
 		ModelAndView mv = new ModelAndView("index.jsp");
 		if(login.getPersonLoggedIn() !=null) {
-			grubDAO.deactivateAndEraseCustomer(login);
-			String log = "You have been D.E.L.E.T.E.D go f yourself";
+			String log = grubDAO.deactivateAndEraseCustomer(login);
 			mv.addObject("message", log);
 			return mv;
 		}
@@ -136,6 +136,7 @@ public class GrubController {
 		System.out.println("Back from Finalizing Order");
 		return mv;
 	}
+	
 	@RequestMapping(path="createorder.do", method = RequestMethod.POST)
 	public ModelAndView buildOrder(@ModelAttribute("personCred") LogInCredentials login, @ModelAttribute("orderList") Order order, @RequestParam("orderinfo") String info) {
 		System.out.println(info);
@@ -149,12 +150,18 @@ public class GrubController {
 	}
 	
 	@RequestMapping(path="menu.do", method = RequestMethod.POST)
-	public ModelAndView displayRestaurantsMenu(@RequestParam("menuchoice") String s) {
-		ModelAndView mv = new ModelAndView("menu.jsp");
-		mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
-		mv.setViewName("menu.jsp");
-		System.out.println(Timestamp.from(Instant.now()));
-		return mv;
+	public ModelAndView displayRestaurantsMenu(@ModelAttribute("personCred")LogInCredentials login, @RequestParam("menuchoice") String s) {
+		if (login.getPersonLoggedIn() == null) {
+			ModelAndView mv = new ModelAndView("newcustomer.jsp");
+			mv.addObject("message", "You must have an account to place an order.");
+			return mv;
+		} else {
+			ModelAndView mv = new ModelAndView("menu.jsp");
+			mv.addObject("Menu", grubDAO.getUserSelectedMenu(s));
+			mv.setViewName("menu.jsp");
+			System.out.println(Timestamp.from(Instant.now()));
+			return mv;
+		}
 	}
 
 	@RequestMapping(path="browse.do") //, method = RequestMethod.POST)
@@ -163,6 +170,17 @@ public class GrubController {
 		mv.addObject("restList", grubDAO.browseAllRestaurants());
 		return mv;
 	}
+	
+	@RequestMapping(path="createuser.do", method= RequestMethod.POST)
+	public ModelAndView createNewUser(@ModelAttribute("personCred") LogInCredentials login, String user_name, String password, String phone, String birth) {
+		ModelAndView mv = new ModelAndView("browse.jsp");
+		login.setUser_name(user_name);
+		login.setPassword(password);
+		login = grubDAO.createUser(login, phone, birth);
+		mv.addObject("restList", grubDAO.browseAllRestaurants());
+		return mv;
+	}
+	
 	@RequestMapping(path = "logincredentials.do", method = RequestMethod.POST)
 	public ModelAndView setManagerCredentials(@ModelAttribute("personCred") LogInCredentials login, String user_name, String password, String restaurant) {
 		ModelAndView mv = new ModelAndView();
